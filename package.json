@@ -1,0 +1,32 @@
+{
+    "name": "spiget-api",
+    "version": "0.0.1",
+    "description": "A client for Spiget that allows you to get the authors, resources and categories from spigotmc.org",
+    "main": "./dist/index.js",
+    "scripts": {
+        "test": "node ./dist/index.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/VeguiDev/spiget-api.git"
+    },
+    "files": ["./dist/**/*"],
+    "keywords": [
+        "spigot",
+        "spiget",
+        "api",
+        "client",
+        "cli",
+        "minecraft",
+        "download",
+        "plugins",
+        "resources",
+        "authors"
+    ],
+    "author": "VeguiDev",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/VeguiDev/spiget-api/issues"
+    },
+    "homepage": "https://github.com/VeguiDev/spiget-api#readme"
+}
