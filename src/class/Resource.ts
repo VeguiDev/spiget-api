@@ -45,12 +45,12 @@ export interface ResourceI {
     tag:string;
     version:{
         id:number
-    },
-    author:Author,
+    };
+    author:Author;
     category:{
         id:number
-    },
-    rating:ResourceRatingI,
+    };
+    rating:ResourceRatingI;
     releaseDate: number;
     updateDate:number;
     downloads:number;
@@ -72,7 +72,7 @@ export class Resource implements ResourceI {
     tag:string;
     version:{
         id:number
-    },
+    };
     author:Author;
     category:{
         id:number
