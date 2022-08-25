@@ -105,5 +105,33 @@ export class Resource implements ResourceI {
         this.existenceStatus = rRaw.existenceStatus;
     
     }
+
+    static fromRaw(raw:ResourceI):Resource
+    static fromRaw(raw:ResourceI[]):Resource[]
+    static fromRaw(raw:ResourceI|ResourceI[], author?:Author):Resource|Resource[] {
+
+        if(Array.isArray(raw)) {
+
+            let resources:Resource[] = [];
+
+            for(let resc of raw) {
+                resources.push(this.fromRaw(resc));
+            }
+
+            return resources;
+
+        } else {
+
+            let nraw = raw;
+
+            if(author) {
+                nraw.author = author;
+            }
+
+            return new Resource(raw);
+
+        }
+
+    }
 }
 

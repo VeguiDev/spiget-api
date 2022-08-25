@@ -1,4 +1,5 @@
-
+import { ResourceI } from "./Resource";
+import {APIClient} from "../class/APIClient";
 
 export interface AuthorIcon {
     /**
@@ -30,6 +31,23 @@ export interface AuthorIdentities {
     facebook:string;
 }
 
+export interface AuthorResourceConfig {
+    /**
+     * Size of array returned. Default 10
+     */
+    size?:number;
+
+    /**
+     * Page number
+     */
+    page?:number;
+
+    /**
+     * Fields to return
+     */
+    fields?:string[]|(keyof ResourceI)[];
+}
+
 export class Author {
 
     name:string;
@@ -47,7 +65,36 @@ export class Author {
 
     }
 
+    async getResources(config?:AuthorResourceConfig) {
 
+        let defaultConfig:any = {
+            size:10
+        };
+
+        if(config) {
+
+            if(config.size) {
+                defaultConfig.size = config.size;
+            }
+
+            if(config.fields) {
+                defaultConfig.fields = config.fields.join(",");
+            }
+
+            if(config.page) {
+                defaultConfig.page = config.page;
+            }
+
+        }
+
+        let res = await APIClient.req({
+            method: 'GET',
+            url: "authors/"+this.id+"/resources"
+        });
+
+        
+        
+    }
 
     static fromRaw(raw:AuthorI):Author
     static fromRaw(raw:AuthorI[]):Author[]
