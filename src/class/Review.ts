@@ -44,6 +44,15 @@ export class Review {
 
     }
 
+    /**
+     * Returns the message string decoded.
+     */
+    getMessage():string {
+
+        return Buffer.from(this.message, 'base64').toString('utf-8');
+
+    }
+
     static fromRaw(raw:ReviewI):Review
     static fromRaw(raw:ReviewI[]):Review[]
     static fromRaw(raw:ReviewI|ReviewI[]):Review|Review[] {

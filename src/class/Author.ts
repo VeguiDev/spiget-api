@@ -1,5 +1,8 @@
 import { Resource, ResourceI } from "./Resource";
 import {APIClient} from "../class/APIClient";
+import { RequestConfig } from "../interfaces/SpigetAPI";
+import { SpigetAPI } from "./SpigetAPI";
+import { Review } from "./Review";
 
 export interface AuthorIcon {
     /**
@@ -86,16 +89,63 @@ export class Author {
             }
 
         }
-        
+
         let res = await APIClient.req({
             method: 'GET',
-            url: "authors/"+this.id+"/resources"
+            url: "authors/"+this.id+"/resources",
+            params: defaultConfig
         });
 
         if(!Array.isArray(res)) return null;
 
         return Resource.fromRaw(res, this);
         
+    }
+
+    async getReviews(config?:RequestConfig) {
+
+        let spiget = new SpigetAPI();
+
+        let defaultConfig:any = {
+            size:10
+        };
+
+        if(config) {
+
+            if(config.size) {
+                defaultConfig.size = config.size;
+            }
+
+            if(config.fields) {
+                defaultConfig.fields = config.fields.join(",");
+            }
+
+            if(config.page) {
+                defaultConfig.page = config.page;
+            }
+
+        }
+
+        let res = await APIClient.req({
+            method: 'GET',
+            url: "authors/"+this.id+"/reviews",
+            params: defaultConfig
+        });
+
+        if(!Array.isArray(res)) return null;
+
+        let reviews = [];
+
+        for(let rev of res) {
+
+            rev.author = await spiget.getAuthor(rev.author.id);
+
+            reviews.push(rev);
+
+        }
+
+        return Review.fromRaw(reviews);
+
     }
 
     static fromRaw(raw:AuthorI):Author
