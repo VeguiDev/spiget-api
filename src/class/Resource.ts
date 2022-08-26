@@ -54,6 +54,7 @@ export interface ResourceI {
     releaseDate: number;
     updateDate:number;
     downloads:number;
+    description:string;
     icon:ResourceIcon;
     existenceStatus:number;
 
@@ -69,6 +70,7 @@ export class Resource implements ResourceI {
         [link:string]: string;
     };
     name:string;
+    description:string;
     tag:string;
     version:{
         id:number
@@ -103,7 +105,8 @@ export class Resource implements ResourceI {
         this.downloads = rRaw.downloads;
         this.icon = rRaw.icon;
         this.existenceStatus = rRaw.existenceStatus;
-    
+        this.description = rRaw.description;
+
     }
 
     static fromRaw(raw:ResourceI, author?:Author):Resource

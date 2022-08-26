@@ -177,4 +177,63 @@ export class SpigetAPI {
 
     }
 
+    async getNewResources(options?:RequestConfig<ResourceI>) {
+        let defaultParams: any = {
+            size: 10
+        }
+
+        if (options) {
+
+            if (options.size) {
+                defaultParams.size = options.size;
+            }
+
+            if (options.page) {
+                defaultParams.page = options.page;
+            }
+
+            if (options.fields) {
+
+                defaultParams.fields = options.fields.join(",");
+
+            }
+
+        }
+        
+        let res = await APIClient.req({
+            method: 'GET',
+            params: defaultParams,
+            url: 'resources/new'
+        });
+
+        let api = new SpigetAPI();
+
+        let resources = [];
+
+        for(let r of res) {
+
+            let author = await api.getAuthor(r.author.id);
+
+            if(author) {
+
+                r.author = author;
+
+            }
+
+            let category = await api.getCategory(r.category.id);
+
+            if(category) {
+
+                r.category = category;
+
+            }
+
+            resources.push(r);
+
+        }
+
+        return Resource.fromRaw(resources);
+
+    }
+
 }
