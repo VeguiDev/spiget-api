@@ -7,6 +7,6 @@ let api = new SpigetAPI();
 
     let resources = await api.getResources();
 
-    console.log(resources);
+    console.log(Object.keys(resources));
 
 })();

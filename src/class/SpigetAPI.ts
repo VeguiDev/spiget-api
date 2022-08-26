@@ -236,4 +236,15 @@ export class SpigetAPI {
 
     }
 
+    async getResource(id:number) {
+
+        let res = await APIClient.req({
+            method: 'GET',
+            url: 'resources/'+id
+        });
+
+        
+
+    }
+
 }
