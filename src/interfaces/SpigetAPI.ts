@@ -1,4 +1,7 @@
-export interface RequestConfig {
+export interface RequestConfig<T> {
+
+    [name:string]: any;
+
     /**
      * Size of array returned. Default 10
      */
@@ -12,5 +15,8 @@ export interface RequestConfig {
     /**
      * Fields to return
      */
-    fields?:string[]|(keyof ResourceI)[];
+    fields?:string[]|(keyof T)[];
+}
+
+export interface CategoryRequestConfig<T> extends RequestConfig<T> {
 }

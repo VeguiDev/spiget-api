@@ -102,7 +102,7 @@ export class Author {
         
     }
 
-    async getReviews(config?:RequestConfig) {
+    async getReviews(config?:RequestConfig<AuthorI>) {
 
         let spiget = new SpigetAPI();
 

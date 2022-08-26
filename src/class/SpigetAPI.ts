@@ -2,7 +2,8 @@ import { RequestConfig } from "../interfaces/SpigetAPI";
 import { AuthorsRequestOptions } from "../interfaces/SpigetAPI_authors";
 import { APIClient } from "./APIClient";
 import { Author } from "./Author";
-import { CategoryCached } from "./Category";
+import { Category, CategoryI } from "./Category";
+import { ResourceI } from "./Resource";
 
 export class SpigetAPI {
 
@@ -45,7 +46,7 @@ export class SpigetAPI {
 
     }
 
-    async getCategories(options?:RequestConfig) {
+    async getCategories(options?:RequestConfig<CategoryI>) {
     
         let defaultParams: any = {
             size: 10
@@ -75,7 +76,25 @@ export class SpigetAPI {
             url: 'categories'
         });
 
-        return CategoryCached.fromRaw(res);
+        return Category.fromRaw(res);
+
+    }
+
+    async getCategory(id:number) {
+
+        let nid = Number(id);
+
+        if(nid == NaN) {
+            throw new Error("Id must be number");
+            return null;
+        }
+
+        let res = await APIClient.req({
+            method:'GET',
+            url: 'categories/'+nid
+        });
+
+        return Category.fromRaw(res);
 
     }
 
@@ -97,6 +116,31 @@ export class SpigetAPI {
             }
         }
 
+    }
+
+    async getResources(options?:RequestConfig<ResourceI>) {
+        let defaultParams: any = {
+            size: 10
+        }
+
+        if (options) {
+
+            if (options.size) {
+                defaultParams.size = options.size;
+            }
+
+            if (options.page) {
+                defaultParams.page = options.page;
+            }
+
+            if (options.fields) {
+
+                defaultParams.fields = options.fields.join(",");
+
+            }
+
+        }
+        
     }
 
 }
