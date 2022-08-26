@@ -1,4 +1,4 @@
-import { ResourceI } from "./Resource";
+import { Resource, ResourceI } from "./Resource";
 import {APIClient} from "../class/APIClient";
 
 export interface AuthorIcon {
@@ -65,7 +65,7 @@ export class Author {
 
     }
 
-    async getResources(config?:AuthorResourceConfig) {
+    async getResources(config?:AuthorResourceConfig):Promise<Resource[]|null> {
 
         let defaultConfig:any = {
             size:10
@@ -86,13 +86,15 @@ export class Author {
             }
 
         }
-
+        
         let res = await APIClient.req({
             method: 'GET',
             url: "authors/"+this.id+"/resources"
         });
 
-        
+        if(!Array.isArray(res)) return null;
+
+        return Resource.fromRaw(res, this);
         
     }
 

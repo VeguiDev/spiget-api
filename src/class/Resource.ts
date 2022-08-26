@@ -106,8 +106,8 @@ export class Resource implements ResourceI {
     
     }
 
-    static fromRaw(raw:ResourceI):Resource
-    static fromRaw(raw:ResourceI[]):Resource[]
+    static fromRaw(raw:ResourceI, author?:Author):Resource
+    static fromRaw(raw:ResourceI[], author?:Author):Resource[]
     static fromRaw(raw:ResourceI|ResourceI[], author?:Author):Resource|Resource[] {
 
         if(Array.isArray(raw)) {
@@ -115,7 +115,7 @@ export class Resource implements ResourceI {
             let resources:Resource[] = [];
 
             for(let resc of raw) {
-                resources.push(this.fromRaw(resc));
+                resources.push(this.fromRaw(resc, author));
             }
 
             return resources;
