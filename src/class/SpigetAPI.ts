@@ -3,7 +3,7 @@ import { AuthorsRequestOptions } from "../interfaces/SpigetAPI_authors";
 import { APIClient } from "./APIClient";
 import { Author } from "./Author";
 import { Category, CategoryI } from "./Category";
-import { ResourceI } from "./Resource";
+import { Resource, ResourceI } from "./Resource";
 
 export class SpigetAPI {
 
@@ -141,6 +141,40 @@ export class SpigetAPI {
 
         }
         
+        let res = await APIClient.req({
+            method: 'GET',
+            params: defaultParams,
+            url: 'resources'
+        });
+
+        let api = new SpigetAPI();
+
+        let resources = [];
+
+        for(let r of res) {
+
+            let author = await api.getAuthor(r.author.id);
+
+            if(author) {
+
+                r.author = author;
+
+            }
+
+            let category = await api.getCategory(r.category.id);
+
+            if(category) {
+
+                r.category = category;
+
+            }
+
+            resources.push(r);
+
+        }
+
+        return Resource.fromRaw(resources);
+
     }
 
 }
