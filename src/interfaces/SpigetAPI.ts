@@ -20,3 +20,15 @@ export interface RequestConfig<T> {
 
 export interface CategoryRequestConfig<T> extends RequestConfig<T> {
 }
+
+export interface IconI {
+
+    url:string;
+    hash:string;
+    /**
+     * Base64 encoded image data
+     */
+    data:string;
+    
+
+}
