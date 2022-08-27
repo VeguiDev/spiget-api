@@ -1,4 +1,5 @@
 import { AuthorI } from "./Author";
+import { IconI } from "./SpigetAPI";
 
 export interface ResourceFileI {
 
@@ -15,6 +16,11 @@ export interface ResourceLinksI {
 
 }
 
+export interface ResourceVersion {
+    id:number;
+    uuid:string;
+};
+
 export interface ResourceSortI {
 
     external:boolean;
@@ -25,14 +31,30 @@ export interface ResourceSortI {
     links:ResourceLinksI;
     name:string;
     tag:string;
-    version: {
-        id:number;
-        uuid:string;
-    },
+    versions: ResourceVersion[],
     author: AuthorI,
     category: {
         id:number;
     };
-    icon: Icon
-}
+    icon: IconI;
+    description:string;
+    updates:{
+        id:number;
+    }[];
+    reviews: {id:number}[];
+    version:ResourceVersion;
+    rating: {
+        count:number;
+        average:number;
+    };
+    releaseDate:number;
+    updateDate:number;
+    downloads:number;
+    premium:boolean;
+    price:0;
+    sourceCodeLink: string;
+    supportedLanguages:string;
+    existenceStatus:number;
+    contributors:string;
+};
  
