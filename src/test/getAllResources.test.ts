@@ -1,12 +1,14 @@
-import { SpigetAPI } from "../class/SpigetAPI";
-
-
-let api = new SpigetAPI();
+import axios from 'axios';
 
 (async () => {
 
-    let resources = await api.getResources();
+    let resources = await axios.get('https://api.spiget.org/v2/resources?size=1');
+    let resource = await axios.get('https://api.spiget.org/v2/resources/28140');
 
-    console.log(Object.keys(resources));
+    for(let key of Object.keys(resource.data)) {
+        if(!Object.keys(resources.data[0]).includes(key)) {
+            console.log(key+":"+typeof resource.data[key]);
+        }
+    }
 
 })();
