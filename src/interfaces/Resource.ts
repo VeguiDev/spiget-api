@@ -92,5 +92,5 @@ export interface ResourceVersionI extends ResourceVersionSortI {
     url: string;
     name: string;
     releaseDate: number;
-    resource: number | ResourceI;
+    resource?: number | ResourceI;
 }

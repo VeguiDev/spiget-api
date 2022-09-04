@@ -19,7 +19,8 @@ export interface AxiosRequestConfigI extends AxiosRequestConfig {
 export class APIClient {
 
     cl: Axios = axios.create({
-        baseURL: 'https://api.spiget.org/v2'
+        baseURL: 'https://api.spiget.org/v2',
+        validateStatus: (statusN) => statusN < 500, 
     });
 
     static async GETGITHUBRELEASE(urlx: string) {
@@ -29,6 +30,7 @@ export class APIClient {
                 "Accept": "application/vnd.github+json",
                 "User-Agent": process.env.SPIGETAPI_AGENT_NAME || "development-agent"
             },
+            validateStatus: (statusN) => statusN < 500, 
             baseURL: "https://api.github.com"
         })
 
@@ -44,42 +46,46 @@ export class APIClient {
 
         console.log(author, repository, pathIn, mustBeTag, tag);
 
-        if (mustBeTag && tag) {
+        try {
+            if (mustBeTag && tag) {
 
-            let res = await client.request({
-                url: "repos/"+author+"/"+repository+"/releases/tags/"+tag,
-                method: 'GET'
-            });
-
-            let assets = [];
-
-            for(let asset of res.data.assets) {
-                assets.push({
-                    name: asset.name,
-                    url: asset.browser_download_url
-                })
+                let res = await client.request({
+                    url: "repos/"+author+"/"+repository+"/releases/tags/"+tag,
+                    method: 'GET'
+                });
+    
+                let assets = [];
+    
+                for(let asset of res.data.assets) {
+                    assets.push({
+                        name: asset.name,
+                        url: asset.browser_download_url
+                    })
+                }
+    
+                return assets[0];
+    
+            } else {
+                let res = await client.request({
+                    url: "repos/"+author+"/"+repository+"/releases/latest",
+                    method: 'GET'
+                });
+    
+                let assets = [];
+    
+                for(let asset of res.data.assets) {
+                    assets.push({
+                        name: asset.name,
+                        url: asset.browser_download_url
+                    })
+                }
+    
+                return assets[0];
             }
-
-            return assets[0];
-
-        } else {
-            let res = await client.request({
-                url: "repos/"+author+"/"+repository+"/releases/latest",
-                method: 'GET'
-            });
-
-            let assets = [];
-
-            for(let asset of res.data.assets) {
-                assets.push({
-                    name: asset.name,
-                    url: asset.browser_download_url
-                })
-            }
-
-            return assets[0];
+        } catch(e) {
+            console.error(e);
+            return null;
         }
-        
         return null;
 
     }
@@ -108,8 +114,32 @@ export class APIClient {
 export function PrepareParams(params?: any): any {
     let op = params;
 
-    if (op.fields) {
-        op.fields = params.fields.join(",");
+    if(op) {
+
+        for(let key of Object.keys(op)) {
+
+            if(Array.isArray(op[key])) {
+                op[key] = op[key].join(",");
+            }
+
+        }
+
+        if(op.sort) {
+
+            if(op.sort.must && op.sort.field) {
+
+                let sortMode = true;
+
+                if(op.sort.must == "most") {
+                    sortMode = false;
+                }
+
+                op.sort = (sortMode ? '+' : '-') + op.sort.field;
+
+            }
+
+        }
+
     }
 
     return op;

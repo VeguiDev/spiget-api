@@ -1,9 +1,20 @@
+import { APIClient } from "../class/APIClient";
+
 export interface RequestConfig<T> {
 
     /**
      * Size of array returned. Default 10
      */
     size?:number;
+
+    /**
+     * Sort by field
+     * Example: Resources More Donwlaoded
+     */
+    sort?:{
+        must: ('most'|'least');
+        field: string;
+    }
 
     /**
      * Page number
