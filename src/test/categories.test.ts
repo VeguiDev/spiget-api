@@ -1,4 +1,4 @@
-import { CategoryAPI } from "../class/Category";
+import { CategoryAPI } from "../class/api/Category";
 
 (async () => {
     let categories = await CategoryAPI.getCategories();

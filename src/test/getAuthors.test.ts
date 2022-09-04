@@ -1,4 +1,4 @@
-import { AuthorsAPI } from "../class/Author";
+import { AuthorsAPI } from "../class/api/Author";
 
 (async () => {
 

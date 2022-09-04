@@ -1,4 +1,4 @@
-import { ResourceAPI } from "../class/Resource";
+import { ResourceAPI } from "../class/api/Resource";
 
 (async () => {
     let resources = await ResourceAPI.getResources({
