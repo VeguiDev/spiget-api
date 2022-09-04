@@ -1,5 +1,5 @@
 import { AuthorI } from "./Author";
-import { IconI } from "./SpigetAPI";
+import { IconI, RatingI } from "./SpigetAPI";
 
 export interface ResourceFileI {
 
@@ -7,6 +7,7 @@ export interface ResourceFileI {
     size: number;
     sizeUnit: ("B" | "KB" | "MB" | "GB");
     url: string;
+    name?: string;
 
 }
 
@@ -16,7 +17,7 @@ export interface ResourceLinksI {
 
 }
 
-export interface ResourceVersion {
+export interface ResourceVersionSortI {
     id: number;
     uuid: string;
 };
@@ -30,11 +31,11 @@ export interface ResourceShortI {
     external: boolean;
     file: ResourceFileI;
     likes: number;
-    testedVersions: ResourceVersion[];
+    testedVersions: ResourceVersionSortI[];
     links: ResourceLinksI;
     name: string;
     tag: string;
-    version: ResourceVersion;
+    version: ResourceVersionSortI;
     author: AuthorI;
     category: {
         id: number
@@ -52,12 +53,12 @@ export interface ResourceShortI {
 export interface ResourceI extends ResourceShortI {
 
     description: string;
-    versions: ResourceVersion[];
+    versions: ResourceVersionSortI[];
     updates: {
-        id:number;
+        id: number;
     };
     reviews: {
-        id:number;
+        id: number;
     };
     price: number;
     sourceCodeLink: string;
@@ -68,12 +69,28 @@ export interface ResourceI extends ResourceShortI {
 
 export interface ResourceForI {
 
-    check:string[];
-    method:"any"|"all";
+    check: string[];
+    method: "any" | "all";
     match: {
         id: number;
-        name:string;
+        name: string;
         testedVersions: string[]
     }
 
+}
+
+export interface ResourceDownloadLinkI {
+
+    name: string;
+    url: string;
+
+}
+
+export interface ResourceVersionI extends ResourceVersionSortI {
+    downloads: number;
+    rating: RatingI;
+    url: string;
+    name: string;
+    releaseDate: number;
+    resource: number | ResourceI;
 }

@@ -5,9 +5,9 @@ import { ResourceAPI } from "../class/Resource";
         filter:'free'
     });
 
-    console.log(resources);
+    // console.log(resources);
 
-    // let resource = await ResourceAPI.getResource(2);
+    let resource = await ResourceAPI.getResourceDownload(2);
 
-    // console.log(resource);
+    console.log(resource);
 })();
