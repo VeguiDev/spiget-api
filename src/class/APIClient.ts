@@ -26,7 +26,8 @@ export class APIClient {
 
         let client = axios.create({
             headers: {
-                "Accept": "application/vnd.github+json"
+                "Accept": "application/vnd.github+json",
+                "User-Agent": process.env.SPIGETAPI_AGENT_NAME || "development-agent"
             },
             baseURL: "https://api.github.com"
         })
