@@ -1,7 +1,5 @@
 export interface RequestConfig<T> {
 
-    [name:string]: any;
-
     /**
      * Size of array returned. Default 10
      */
@@ -31,4 +29,9 @@ export interface IconI {
     data:string;
     
 
+}
+
+export interface RatingI {
+    count:number;
+    average:number;
 }

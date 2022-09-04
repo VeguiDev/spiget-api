@@ -65,3 +65,15 @@ export interface ResourceI extends ResourceShortI {
     contributors: string;
 
 };
+
+export interface ResourceForI {
+
+    check:string[];
+    method:"any"|"all";
+    match: {
+        id: number;
+        name:string;
+        testedVersions: string[]
+    }
+
+}
