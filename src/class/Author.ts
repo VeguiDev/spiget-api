@@ -6,16 +6,18 @@ import { IconI, RatingI, RequestConfig } from "../interfaces/SpigetAPI";
 import { AuthorsAPI } from "./api/Author";
 import { ResourceAPI } from "./api/Resource";
 import { APIClient } from "./APIClient";
+import { Category } from "./Category";
+import { Resource, ResourceReview } from "./Resource";
 
 const API = new APIClient();
 
 export class Author {
 
-    id:number;
-    name:string;
-    icon:IconI;
+    id: number;
+    name: string;
+    icon: IconI;
 
-    constructor(r:AuthorI) {
+    constructor(r: AuthorI) {
 
         this.id = r.id;
         this.name = r.name;
@@ -25,40 +27,49 @@ export class Author {
     /**
      * Get Resources of this author.
      */
-    async getResources(options?:RequestConfig<ResourceI>) {
+    async getResources(options?: RequestConfig<ResourceI>) {
 
-        return await AuthorsAPI.getAuthorResources(this.id, options);
+        let rR = await AuthorsAPI.getAuthorResources(this.id, options);
+
+        if (!rR) return null;
+
+        let resources = [];
+
+        for (let res of rR) {
+
+            let category = await Category.findById(res.category.id);
+
+            if (!category) break;
+
+            resources.push(new Resource(res, this, category));
+
+        }
+
+        return resources;
 
     }
 
-    async getReviews(options?:RequestConfig<ReviewI>) {
+    async getReviews(options?: RequestConfig<ReviewI>) {
 
         let reviews = await AuthorsAPI.getAuthorReviews(this.id, options);
 
-        if(!reviews) return null;
+        if (!reviews) return null;
 
         let rs = [];
 
-        for(let rev of reviews) {
-            
+        for (let rev of reviews) {
             let review;
 
             if(rev.resource) {
-                let resource = await ResourceAPI.getResource(rev.resource);
+                let resource = await Resource.findByID(rev.resource);
 
-                if(!resource) break;
+                if (!resource) break;
 
                 review = new Review(rev, this, resource);
-
             } else {
-
                 review = new Review(rev, this);
-
             }
 
-            
-            
-            
             rs.push(review);
 
         }
@@ -66,25 +77,25 @@ export class Author {
         return rs;
     }
 
-    static async findByID(id:number) {
+    static async findByID(id: number) {
 
         let authorRaw = await AuthorsAPI.getAuthor(id);
 
-        if(!authorRaw) return null;
+        if (!authorRaw) return null;
 
         return new Author(authorRaw);
 
     }
 
-    static async findAll(options?:RequestConfig<AuthorI>) {
+    static async findAll(options?: RequestConfig<AuthorI>) {
 
         let authorsRaw = await AuthorsAPI.getAuthors(options);
 
-        if(!authorsRaw) return null;
+        if (!authorsRaw) return null;
 
         let authors = [];
 
-        for(let author of authorsRaw) {
+        for (let author of authorsRaw) {
             authors.push(new Author(author));
         }
 
@@ -96,22 +107,22 @@ export class Author {
 
 export class Review {
 
-    author:Author;
+    author: Author;
 
-    rating:RatingI;
+    rating: RatingI;
 
-    
-    private message_base64:string;
 
-    version:string;
+    private message_base64: string;
 
-    date:number;
+    version: string;
 
-    resource?:ResourceI;
+    date: number;
 
-    id:number;
+    resource?: Resource;
 
-    constructor(r:ReviewI, author:Author, resource?:ResourceI) {
+    id: number;
+
+    constructor(r: ReviewI, author: Author, resource?: Resource) {
 
         this.id = r.id;
         this.message_base64 = r.message;

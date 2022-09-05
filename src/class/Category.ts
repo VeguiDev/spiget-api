@@ -2,6 +2,8 @@ import { CategoryI } from "../interfaces/Category";
 import { ResourceI } from "../interfaces/Resource";
 import { RequestConfig } from "../interfaces/SpigetAPI";
 import { CategoryAPI } from "./api/Category";
+import { Author } from "./Author";
+import { Resource } from "./Resource";
 
 
 export class Category {
@@ -18,7 +20,23 @@ export class Category {
 
     async getResources(options?:RequestConfig<ResourceI>) {
 
-        return await CategoryAPI.getCategoryResources(this.id, options);
+        let rses = await CategoryAPI.getCategoryResources(this.id, options);
+
+        if(!rses) return null;
+
+        let resources = [];
+
+        for(let res of rses) {
+
+            let author = await Author.findByID(res.author.id);
+
+            if(!author) break;
+
+            resources.push(new Resource(res, author, this));
+
+        }
+
+        return resources;
 
     }
 
