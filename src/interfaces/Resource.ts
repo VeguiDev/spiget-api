@@ -67,7 +67,7 @@ export interface ResourceI extends ResourceShortI {
     supportedLanguages?: string;
     contributors: string;
 
-};
+}; 
 
 export interface ResourceForI {
 

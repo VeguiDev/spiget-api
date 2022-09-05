@@ -95,7 +95,7 @@ it("check if works review message getter", async () => {
 
 it("check if can get author reviews", async () => {
 
-    let author = await api.getAuthorByID(100356);
+    let author = await api.getAuthorByID(2);
 
     if(!author) {
         expect(author).not.toBeNull();
@@ -111,9 +111,8 @@ it("check if can get author reviews", async () => {
 
     expect(reviews).toBeInstanceOf(Array);
 
-    if(reviews.length > 0) {
-        expect(reviews[0]).toBeInstanceOf(Review)
-    }
+    expect(reviews[0]).toBeInstanceOf(Review);
+    
 });
 
 it('check if invalid author returns null', async () => {

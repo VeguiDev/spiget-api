@@ -54,3 +54,37 @@ it('check if completeResponse works', async () => {
     expect(re.data).toBeInstanceOf(Object);
 
 });
+
+it('check if GITHUB RELEASE DOWNLOAD works', async () => {
+    
+    let githubUrl = await APIClient.GETGITHUBRELEASE("https://github.com/SkinsRestorer/SkinsRestorerX/releases/tag/14.2.3");
+
+    if(!githubUrl) {
+        expect(githubUrl).not.toBeNull();
+        return;
+    }
+
+    expect(githubUrl).toBeInstanceOf(Object);
+    expect(typeof githubUrl.url == 'string').toBe(true);
+    expect(typeof githubUrl.name == 'string').toBe(true);
+
+    githubUrl = await APIClient.GETGITHUBRELEASE("https://github.com/SkinsRestorer/SkinsRestorerX/releases");
+
+    if(!githubUrl) {
+        expect(githubUrl).not.toBeNull();
+        return;
+    }
+
+    expect(githubUrl).toBeInstanceOf(Object);
+    expect(typeof githubUrl.url == 'string').toBe(true);
+    expect(typeof githubUrl.name == 'string').toBe(true);
+
+});
+
+it('check if GITHUB RELEASE DOWNLOAD ERROR works', async () => {
+    
+    let githubUrl = await APIClient.GETGITHUBRELEASE("https://github.com/SkinsRestorer/SkinsRestorerX/releases/asdasdasd/14.2.3");
+
+    expect(githubUrl).not.toBeNull();
+
+});

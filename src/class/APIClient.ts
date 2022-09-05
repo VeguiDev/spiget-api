@@ -30,7 +30,6 @@ export class APIClient {
                 "Accept": "application/vnd.github+json",
                 "User-Agent": process.env.SPIGETAPI_AGENT_NAME || "development-agent"
             },
-            validateStatus: (statusN) => statusN < 500, 
             baseURL: "https://api.github.com"
         })
 
@@ -43,8 +42,6 @@ export class APIClient {
             pathIn = path[3],
             mustBeTag = path[4],
             tag = path[5]
-
-        console.log(author, repository, pathIn, mustBeTag, tag);
 
         try {
             if (mustBeTag && tag) {
@@ -95,7 +92,7 @@ export class APIClient {
         try {
 
             let res = await this.cl.request(config);
-
+            
             if (config.completeResponse) return res;
 
             return res.data;

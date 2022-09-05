@@ -124,7 +124,7 @@ export class Resource {
 
         let upt = await ResourceAPI.getResourceUpdate(this.id, id);
 
-        if(!upt) return null;
+        if(!upt || (upt as any).error == "update not found") return null;
 
         return new ResourceUpdate(upt, this);
 
@@ -176,7 +176,7 @@ export class Resource {
         let rese = await ResourceAPI.getResource(id);
 
         if(!rese || rese.error == "resource not found") return null;
-        // console.log(rese);
+
         let author = await Author.findByID(rese.author.id),
             category = await Category.findById(rese.category.id)
 

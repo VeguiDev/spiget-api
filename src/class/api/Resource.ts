@@ -35,14 +35,14 @@ export class ResourceAPI {
 
             } else if (options.version) {
                 url += "/for/" + options.version.join(",");
-
+                delete (options as any).version;
             }
 
             delete options?.filter;
         }
 
         let params = PrepareParams(options);
-
+        
         let res = await API.req({
             method: 'GET',
             url,
@@ -71,7 +71,7 @@ export class ResourceAPI {
 
     }
 
-    static async getResourceReviews(id: number, options?:RequestConfig<ReviewI>): Promise<ReviewI[] | null> {
+    static async getResourceReviews(id: number, options?: RequestConfig<ReviewI>): Promise<ReviewI[] | null> {
 
         let params = PrepareParams(options);
 
@@ -87,7 +87,7 @@ export class ResourceAPI {
 
     }
 
-    static async getResourceUpdates(id: number, options?:RequestConfig<ResourceUpdateI>): Promise<ResourceUpdateI[] | null> {
+    static async getResourceUpdates(id: number, options?: RequestConfig<ResourceUpdateI>): Promise<ResourceUpdateI[] | null> {
 
         let params = PrepareParams(options);
 
@@ -103,15 +103,15 @@ export class ResourceAPI {
 
     }
 
-    static async getResourceUpdate(id: number, update_id:number|"latest"): Promise<ResourceUpdateI| null> {
+    static async getResourceUpdate(id: number, update_id: number | "latest"): Promise<ResourceUpdateI | null> {
 
         // let params = PrepareParams(options);
 
-        if(Number(update_id) == NaN && update_id != "latest") return null;
+        if (Number(update_id) == NaN && update_id != "latest") return null;
 
         let res = await API.req({
             method: 'GET',
-            url: 'resources/' + id + '/updates/'+update_id
+            url: 'resources/' + id + '/updates/' + update_id
             // params
         });
 
@@ -121,40 +121,40 @@ export class ResourceAPI {
 
     }
 
-    static async getResourceVersions(id:number, options?:RequestConfig<ResourceVersionI>): Promise<ResourceVersionI[] | null> {
+    static async getResourceVersions(id: number, options?: RequestConfig<ResourceVersionI>): Promise<ResourceVersionI[] | null> {
 
         let params = PrepareParams(options);
 
         let res = await API.req({
             method: 'GET',
-            url: 'resources/'+id+'/versions',
+            url: 'resources/' + id + '/versions',
             params
         });
 
-        if(axios.isAxiosError(res)) return null;
+        if (axios.isAxiosError(res)) return null;
 
         return res;
 
     }
 
-    static async getResourceVersion(id:number, version_id:number|'latest'): Promise<ResourceVersionI | null> {
+    static async getResourceVersion(id: number, version_id: number | 'latest'): Promise<ResourceVersionI | null> {
 
         // let params = PrepareParams(options);
 
         let res = await API.req({
             method: 'GET',
-            url: 'resources/'+id+'/versions/'+version_id
+            url: 'resources/' + id + '/versions/' + version_id
             // params
         });
 
-        if(axios.isAxiosError(res)) return null;
+        if (axios.isAxiosError(res)) return null;
 
         return res;
 
     }
 
-    static async getResourceDownload(id: number, options?:{
-        version?:number|'latest'
+    static async getResourceDownload(id: number, options?: {
+        version?: number | 'latest'
     }): Promise<ResourceDownloadLinkI | null> {
 
         // let params = options;
@@ -165,20 +165,51 @@ export class ResourceAPI {
 
         let reqUrl = 'resources/' + id + '/download';
 
-        if(options) {
-            if(options.version) {
-                reqUrl = 'resources/' + id + '/versions/'+options.version+'/download'
+        if (options) {
+            if (options.version) {
+                
+                if (!resource.external) {
+
+                    let rUrl = "https://www.spigotmc.org/resources/" + resource.name + "." + resource.id + "/download?version=" + options?.version;
+
+                    let verID = resource.version.id;
+
+                    if (options && options.version && options.version != 'latest') {
+
+                        verID = options.version;
+
+                    }
+
+                    let version = await this.getResourceVersion(resource.id, verID);
+
+                    let name = resource.name + "-" + verID + ".jar";
+
+                    if (version) {
+                        name = resource.name + "-" + version.name + ".jar"
+                    };
+
+                    return {
+                        url: rUrl,
+                        name
+                    };
+
+                }
+                
+                reqUrl = 'resources/' + id + '/versions/' + options.version + '/download'
             }
         }
 
+
+
         let res = await API.req({
-            method: 'HEAD',
+            method: 'GET',
             url: reqUrl,
             completeResponse: true
-            // params
         });
 
         if (axios.isAxiosError(res)) return null;
+
+        if (res == "500_error") return null;
 
         let url = new URL(res.request.res.responseUrl);
 
@@ -187,7 +218,7 @@ export class ResourceAPI {
 
             let verID = resource.version.id;
 
-            if(options && options.version && options.version != 'latest') {
+            if (options && options.version && options.version != 'latest') {
 
                 verID = options.version;
 
@@ -195,10 +226,10 @@ export class ResourceAPI {
 
             let version = await this.getResourceVersion(resource.id, verID);
 
-            let name = resource.name+"-"+verID+".jar";
+            let name = resource.name + "-" + verID + ".jar";
 
-            if(version) {
-                name = resource.name+"-"+version.name+".jar"
+            if (version) {
+                name = resource.name + "-" + version.name + ".jar"
             };
 
             return {
@@ -208,8 +239,6 @@ export class ResourceAPI {
         };
 
         if (url.host == "github.com") {
-            console.log("FROM GITHUB");
-            console.log("PATH: ", url.pathname);
 
             let githubDownload = await APIClient.GETGITHUBRELEASE(url.toString());
 
