@@ -5,6 +5,8 @@ import { SpigetAPI } from "../class/SpigetAPI";
 
 const api = new SpigetAPI("test");
 
+jest.setTimeout(10000);
+
 it('check if get author', async () => {
 
     let author = await api.getAuthorByID(2);

@@ -2,6 +2,8 @@ import { APIClient, PrepareParams } from "../class/APIClient";
 
 let api = new APIClient();
 
+jest.setTimeout(10000);
+
 it('api must be APIClient', () => {
     expect(api).toBeInstanceOf(APIClient);
 })
