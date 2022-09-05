@@ -81,7 +81,7 @@ export class Author {
 
         let authorRaw = await AuthorsAPI.getAuthor(id);
 
-        if (!authorRaw) return null;
+        if (!authorRaw || (authorRaw as any).error =="author not found") return null;
 
         return new Author(authorRaw);
 

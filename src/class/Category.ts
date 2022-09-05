@@ -45,7 +45,7 @@ export class Category {
 
         let category = await CategoryAPI.getCategory(id);
 
-        if(!category) return null;
+        if(!category || (category as any).error == "category not found") return null;
 
         return new Category(category);
 

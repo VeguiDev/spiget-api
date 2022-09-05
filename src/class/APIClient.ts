@@ -102,7 +102,7 @@ export class APIClient {
 
         } catch (e) {
 
-            throw e;
+            return "500_error";
 
         }
 

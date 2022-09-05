@@ -176,7 +176,7 @@ export class Resource {
         let rese = await ResourceAPI.getResource(id);
 
         if(!rese || rese.error == "resource not found") return null;
-        console.log(rese);
+        // console.log(rese);
         let author = await Author.findByID(rese.author.id),
             category = await Category.findById(rese.category.id)
 
