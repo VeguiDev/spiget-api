@@ -1,4 +1,4 @@
-import { ResourceFileI, ResourceI, ResourceLinksI, ResourceRatingI, ResourceVersionI, ResourceVersionSortI } from "../interfaces/Resource";
+import { ResourceFileI, ResourceI, ResourceLinksI, ResourceRatingI, ResourceVersionSortI, ResourceVersionI, ResourceUpdateI } from "../interfaces/Resource";
 import { ReviewI } from "../interfaces/Review";
 import { IconI, RatingI, RequestConfig } from "../interfaces/SpigetAPI";
 import { Props } from "../interfaces/SpigetAPI_resources";
@@ -102,25 +102,58 @@ export class Resource {
 
     }
 
-    async getUpdates(options?:RequestConfig<ReviewI>) {
+    async getUpdates(options?:RequestConfig<ResourceUpdateI>) {
 
-        let revs = await ResourceAPI.getResourceReviews(this.id, options);
+        let upts = await ResourceAPI.getResourceUpdates(this.id, options);
 
-        if(!revs) return null;
+        if(!upts) return null;
 
-        let reviews = [];
+        let updates = [];
 
-        for(let rev of revs) {
+        for(let udt of upts) {
 
-            let author = await Author.findByID(rev.author.id);
-
-            if(!author) break;
-
-            reviews.push(new ResourceReview(rev, this, author));
+            updates.push(new ResourceUpdate(udt, this));
 
         }
 
-        return reviews;
+        return updates;
+
+    }
+
+    async getUpdate(id:number|"latest") {
+
+        let upt = await ResourceAPI.getResourceUpdate(this.id, id);
+
+        if(!upt) return null;
+
+        return new ResourceUpdate(upt, this);
+
+    }
+
+    async getVersions(options?:RequestConfig<ResourceVersionSortI>) {
+        let vers = await ResourceAPI.getResourceVersions(this.id, options);
+
+        if(!vers) return null;
+
+        let versions = [];
+
+        for(let ver of vers) {
+
+            versions.push(new ResourceVersion(ver, this));
+
+        }
+
+        return versions;
+
+    }
+
+    async getVersion(id:number|"latest") {
+
+        let ver = await ResourceAPI.getResourceVersion(this.id, id);
+
+        if(!ver) return null;
+
+        return new ResourceVersion(ver, this);
 
     }
 
@@ -234,38 +267,64 @@ export class ResourceReview {
 
 }
 
-export class ResourceReview {
-
-    author:Author;
-
-    rating:RatingI;
-
-    /**
-     * Base64 Encoded String
-     */
-    private message_base64:string;
-
-    version:string;
-
+export class ResourceUpdate {
     date:number;
+
+    likes:number;
+
+    private description_base64:string;
+
+    title:string;
 
     resource:Resource;
 
     id:number;
 
-    constructor(r:ReviewI, resource:Resource, author:Author) {
+    constructor(r:ResourceUpdateI, resource:Resource) {
 
         this.id = r.id;
         this.resource = resource;
         this.date = r.date;
-        this.version = r.version;
-        this.message_base64 = r.message;
-        this.rating = r.rating;
-        this.author = author;
+        this.description_base64 = r.description;
+        this.likes = r.likes;
+        this.title = r.title;
+
     }
 
-    get message() {
-        return Buffer.from(this.message_base64, 'base64').toString('utf-8');
+    get description() {
+        return Buffer.from(this.description_base64, 'base64').toString('utf-8');
+    }
+
+}
+
+export class ResourceVersion {
+
+    id: number;
+    uuid: string;
+    downloads: number;
+    rating: RatingI;
+    url: string;
+    name: string;
+    releaseDate: number;
+    resource: Resource;
+
+    constructor(r:ResourceVersionI, resource:Resource) {
+
+        this.id = r.id;
+        this.uuid = r.uuid;
+        this.downloads = r.downloads;
+        this.rating = r.rating;
+        this.url = r.url;
+        this.name = r.name;
+        this.releaseDate = r.releaseDate;
+        this.resource = resource;
+
+    }
+
+    async getDownloadURL() {
+        return await ResourceAPI.getResourceDownload(this.resource.id, {
+            version: this.id
+        });
     }
 
 }

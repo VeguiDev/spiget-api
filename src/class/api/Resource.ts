@@ -103,6 +103,24 @@ export class ResourceAPI {
 
     }
 
+    static async getResourceUpdate(id: number, update_id:number|"latest"): Promise<ResourceUpdateI| null> {
+
+        // let params = PrepareParams(options);
+
+        if(Number(update_id) == NaN && update_id != "latest") return null;
+
+        let res = await API.req({
+            method: 'GET',
+            url: 'resources/' + id + '/updates/'+update_id
+            // params
+        });
+
+        if (axios.isAxiosError(res)) return null;
+
+        return res;
+
+    }
+
     static async getResourceVersions(id:number, options?:RequestConfig<ResourceVersionI>): Promise<ResourceVersionI[] | null> {
 
         let params = PrepareParams(options);
