@@ -1,171 +1,141 @@
-import { Resource, ResourceI } from "./Resource";
-import {APIClient} from "../class/APIClient";
-import { RequestConfig } from "../interfaces/SpigetAPI";
-import { SpigetAPI } from "./SpigetAPI";
-import { Review } from "./Review";
+import axios from "axios";
+import { AuthorI } from "../interfaces/Author";
+import { ResourceI } from "../interfaces/Resource";
+import { ReviewI } from "../interfaces/Review";
+import { IconI, RatingI, RequestConfig } from "../interfaces/SpigetAPI";
+import { AuthorsAPI } from "./api/Author";
+import { ResourceAPI } from "./api/Resource";
+import { APIClient } from "./APIClient";
+import { Category } from "./Category";
+import { Resource, ResourceReview } from "./Resource";
 
-export interface AuthorIcon {
-    /**
-     * Url to author icon
-     */
-    url:string;
-
-    /**
-     * The base64 encoded author icon
-     */
-    data:string;
-
-    info:number;
-
-    hash:string;
-}
-
-export interface AuthorI {
-    id:number;
-    name:string;
-    icon:AuthorIcon;
-    identities:AuthorIdentities;
-
-}
-
-export interface AuthorIdentities {
-    iam:string;
-    twitter:string;
-    facebook:string;
-}
-
-export interface AuthorResourceConfig {
-    /**
-     * Size of array returned. Default 10
-     */
-    size?:number;
-
-    /**
-     * Page number
-     */
-    page?:number;
-
-    /**
-     * Fields to return
-     */
-    fields?:string[]|(keyof ResourceI)[];
-}
+const API = new APIClient();
 
 export class Author {
 
-    name:string;
-    icon:AuthorIcon;
-    id:number;
-    identities:AuthorIdentities;
-    
-    constructor(authorRaw:AuthorI) {
+    id: number;
+    name: string;
+    icon: IconI;
 
-        this.id = authorRaw.id;
-        this.icon = authorRaw.icon;
-        this.name = authorRaw.name;
+    constructor(r: AuthorI) {
 
-        this.identities = authorRaw.identities;
+        this.id = r.id;
+        this.name = r.name;
+        this.icon = r.icon;
+
+    }
+    /**
+     * Get Resources of this author.
+     */
+    async getResources(options?: RequestConfig<ResourceI>) {
+
+        let rR = await AuthorsAPI.getAuthorResources(this.id, options);
+
+        if (!rR) return null;
+
+        let resources = [];
+
+        for (let res of rR) {
+
+            let category = await Category.findById(res.category.id);
+
+            if (!category) continue;
+
+            resources.push(new Resource(res, this, category));
+
+        }
+
+        return resources;
 
     }
 
-    async getResources(config?:AuthorResourceConfig):Promise<Resource[]|null> {
+    async getReviews(options?: RequestConfig<ReviewI>) {
 
-        let defaultConfig:any = {
-            size:10
-        };
+        let reviews = await AuthorsAPI.getAuthorReviews(this.id, options);
 
-        if(config) {
+        if (!reviews) return null;
 
-            if(config.size) {
-                defaultConfig.size = config.size;
+        let rs = [];
+
+        for (let rev of reviews) {
+            let review;
+
+            if(rev.resource) {
+                let resource = await Resource.findByID(rev.resource);
+
+                if (!resource) continue;
+
+                review = new Review(rev, this, resource);
+            } else {
+                review = new Review(rev, this);
             }
 
-            if(config.fields) {
-                defaultConfig.fields = config.fields.join(",");
-            }
-
-            if(config.page) {
-                defaultConfig.page = config.page;
-            }
+            rs.push(review);
 
         }
 
-        let res = await APIClient.req({
-            method: 'GET',
-            url: "authors/"+this.id+"/resources",
-            params: defaultConfig
-        });
-
-        if(!Array.isArray(res)) return null;
-
-        return Resource.fromRaw(res, this);
-        
+        return rs;
     }
 
-    async getReviews(config?:RequestConfig<AuthorI>) {
+    static async findByID(id: number) {
 
-        let spiget = new SpigetAPI();
+        let authorRaw = await AuthorsAPI.getAuthor(id);
 
-        let defaultConfig:any = {
-            size:10
-        };
+        if (!authorRaw || (authorRaw as any).error =="author not found") return null;
 
-        if(config) {
-
-            if(config.size) {
-                defaultConfig.size = config.size;
-            }
-
-            if(config.fields) {
-                defaultConfig.fields = config.fields.join(",");
-            }
-
-            if(config.page) {
-                defaultConfig.page = config.page;
-            }
-
-        }
-
-        let res = await APIClient.req({
-            method: 'GET',
-            url: "authors/"+this.id+"/reviews",
-            params: defaultConfig
-        });
-
-        if(!Array.isArray(res)) return null;
-
-        let reviews = [];
-
-        for(let rev of res) {
-
-            rev.author = await spiget.getAuthor(rev.author.id);
-
-            reviews.push(rev);
-
-        }
-
-        return Review.fromRaw(reviews);
+        return new Author(authorRaw);
 
     }
 
-    static fromRaw(raw:AuthorI):Author
-    static fromRaw(raw:AuthorI[]):Author[]
-    static fromRaw(raw:AuthorI|AuthorI[]):Author|Author[] {
+    static async findAll(options?: RequestConfig<AuthorI>) {
 
-        if(Array.isArray(raw)) {
+        let authorsRaw = await AuthorsAPI.getAuthors(options);
 
-            let authors:Author[] = [];
+        if (!authorsRaw) return null;
 
-            for(let aRaw of raw) {
-                authors.push(new Author(aRaw));
-            }
+        let authors = [];
 
-            return authors;
-
+        for (let author of authorsRaw) {
+            authors.push(new Author(author));
         }
 
-        return new Author(raw);
+        return authors;
 
+    }
+
+}
+
+export class Review {
+
+    author: Author;
+
+    rating: RatingI;
+
+
+    private message_base64: string;
+
+    version: string;
+
+    date: number;
+
+    resource?: Resource;
+
+    id: number;
+
+    constructor(r: ReviewI, author: Author, resource?: Resource) {
+
+        this.id = r.id;
+        this.message_base64 = r.message;
+        this.date = r.date;
+        this.resource = resource;
+        this.author = author;
+        this.version = r.version;
+        this.rating = r.rating;
+
+    }
+
+    get message() {
+        return Buffer.from(this.message_base64, 'base64').toString('utf-8');
     }
 
 }

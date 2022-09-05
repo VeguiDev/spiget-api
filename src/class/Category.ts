@@ -1,14 +1,10 @@
-import { CategoryRequestConfig, RequestConfig } from "../interfaces/SpigetAPI";
-import { APIClient } from "./APIClient";
+import { CategoryI } from "../interfaces/Category";
+import { ResourceI } from "../interfaces/Resource";
+import { RequestConfig } from "../interfaces/SpigetAPI";
+import { CategoryAPI } from "./api/Category";
+import { Author } from "./Author";
 import { Resource } from "./Resource";
-import { SpigetAPI } from "./SpigetAPI";
 
-export interface CategoryI {
-
-    id:number;
-    name:string;
-
-}
 
 export class Category {
 
@@ -22,72 +18,55 @@ export class Category {
 
     }
 
-    static fromRaw(r:CategoryI):Category
-    static fromRaw(r:CategoryI[]):Category[]
-    static fromRaw(r:CategoryI|CategoryI[]):Category|Category[] {
+    async getResources(options?:RequestConfig<ResourceI>) {
 
-        if(Array.isArray(r)) {
+        let rses = await CategoryAPI.getCategoryResources(this.id, options);
 
-            let categories = [];
-
-            for(let cat of r) {
-
-                categories.push(this.fromRaw(cat));
-
-            }
-
-            return categories;
-
-        }
-
-        return new Category(r);
-
-    }
-
-    async getResources(options?:CategoryRequestConfig<CategoryI>) {
-
-        let defaultParams:any = {
-            size: 10
-        };
-
-        if(options) {
-
-            for(let key of Object.keys(options)) {
-                if(key == "fields") {
-
-                    defaultParams.fields = options.fields?.join(",");
-
-                } else {
-                    defaultParams[key] = options[key];
-                }
-            }
-
-        }
-
-        let res = await APIClient.req({
-            method: 'GET',
-            params: defaultParams,
-            url: 'categories/'+this.id+'/resources'
-        });
+        if(!rses) return null;
 
         let resources = [];
 
-        for(let rec of res) {
+        for(let res of rses) {
 
-            let author = await new SpigetAPI().getAuthor(rec.author.id);
+            let author = await Author.findByID(res.author.id);
 
-            if(author) {
-                rec.author = author;
-            }
+            if(!author) continue;
 
-            rec.category = this;
-
-            resources.push(rec);
+            resources.push(new Resource(res, author, this));
 
         }
 
-        return Resource.fromRaw(resources);
+        return resources;
 
     }
 
-}  
+    // Static Methods
+    static async findById(id:number):Promise<Category|null> {
+
+        let category = await CategoryAPI.getCategory(id);
+
+        if(!category || (category as any).error == "category not found") return null;
+
+        return new Category(category);
+
+    }
+
+    static async findAll(options?:RequestConfig<CategoryI>) {
+
+        let categories = await CategoryAPI.getCategories(options);
+
+        if(!categories) return null;
+
+        let cate = [];
+
+        for(let category of categories) {
+
+            cate.push(new Category(category));
+
+        }
+        
+        return cate;
+
+    }
+
+}

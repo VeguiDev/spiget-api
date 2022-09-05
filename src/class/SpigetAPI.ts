@@ -1,250 +1,53 @@
+import { AuthorI } from "../interfaces/Author";
+import { CategoryI } from "../interfaces/Category";
 import { RequestConfig } from "../interfaces/SpigetAPI";
-import { AuthorsRequestOptions } from "../interfaces/SpigetAPI_authors";
-import { APIClient } from "./APIClient";
+import { Props } from "../interfaces/SpigetAPI_resources";
 import { Author } from "./Author";
-import { Category, CategoryI } from "./Category";
-import { Resource, ResourceI } from "./Resource";
+import { Category } from "./Category";
+import { Resource } from "./Resource";
+
 
 export class SpigetAPI {
 
-    async getAuthors(options?: AuthorsRequestOptions) {
-        let defaultParams: any = {
-            size: 10
-        }
+    agent_name:string;
 
-        if (options) {
+    constructor(agent_name:string) {
 
-            if (options.size) {
-                defaultParams.size = options.size;
-            }
+        this.agent_name = agent_name;
+        process.env.SPIGETAPI_AGENT_NAME = agent_name;
 
-            if (options.page) {
-                defaultParams.page = options.page;
-            }
+    }
 
-            if (options.fields) {
+    async getAuthorByID(id:number) {
 
-                defaultParams.fields = options.fields.join(",");
+        return await Author.findByID(id);
 
-            }
+    }
 
-        }
+    async getAuthors(options?:RequestConfig<AuthorI>) {
 
-        let authors = await APIClient.req({
-            method: 'GET',
-            url: 'authors',
-            params: defaultParams
-        });
+        return await Author.findAll(options);
 
-        if (authors) {
+    }
 
-            return authors;
+    async getCategoryByID(id:number) {
 
-        } else {
-            return null;
-        }
+        return await Category.findById(id);
 
     }
 
     async getCategories(options?:RequestConfig<CategoryI>) {
-    
-        let defaultParams: any = {
-            size: 10
-        }
 
-        if (options) {
-
-            if (options.size) {
-                defaultParams.size = options.size;
-            }
-
-            if (options.page) {
-                defaultParams.page = options.page;
-            }
-
-            if (options.fields) {
-
-                defaultParams.fields = options.fields.join(",");
-
-            }
-
-        }
-
-        let res = await APIClient.req({
-            method: 'GET',
-            params: defaultParams,
-            url: 'categories'
-        });
-
-        return Category.fromRaw(res);
+        return await Category.findAll(options);
 
     }
 
-    async getCategory(id:number) {
-
-        let nid = Number(id);
-
-        if(nid == NaN) {
-            throw new Error("Id must be number");
-            return null;
-        }
-
-        let res = await APIClient.req({
-            method:'GET',
-            url: 'categories/'+nid
-        });
-
-        return Category.fromRaw(res);
-
-    }
-
-    async getAuthor(id: number) {
-        let nid = Number(id);
-
-        if (nid == NaN) {
-            throw new Error("Author id must be a number.")
-        } else {
-            let re = await APIClient.req({
-                method: 'GET',
-                url: "authors/" + id
-            });
-
-            if (re) {
-                return Author.fromRaw(re);
-            } else {
-                return null;
-            }
-        }
-
-    }
-
-    async getResources(options?:RequestConfig<ResourceI>) {
-        let defaultParams: any = {
-            size: 10
-        }
-
-        if (options) {
-
-            if (options.size) {
-                defaultParams.size = options.size;
-            }
-
-            if (options.page) {
-                defaultParams.page = options.page;
-            }
-
-            if (options.fields) {
-
-                defaultParams.fields = options.fields.join(",");
-
-            }
-
-        }
-        
-        let res = await APIClient.req({
-            method: 'GET',
-            params: defaultParams,
-            url: 'resources'
-        });
-
-        let api = new SpigetAPI();
-
-        let resources = [];
-
-        for(let r of res) {
-
-            let author = await api.getAuthor(r.author.id);
-
-            if(author) {
-
-                r.author = author;
-
-            }
-
-            let category = await api.getCategory(r.category.id);
-
-            if(category) {
-
-                r.category = category;
-
-            }
-
-            resources.push(r);
-
-        }
-
-        return Resource.fromRaw(resources);
-
-    }
-
-    async getNewResources(options?:RequestConfig<ResourceI>) {
-        let defaultParams: any = {
-            size: 10
-        }
-
-        if (options) {
-
-            if (options.size) {
-                defaultParams.size = options.size;
-            }
-
-            if (options.page) {
-                defaultParams.page = options.page;
-            }
-
-            if (options.fields) {
-
-                defaultParams.fields = options.fields.join(",");
-
-            }
-
-        }
-        
-        let res = await APIClient.req({
-            method: 'GET',
-            params: defaultParams,
-            url: 'resources/new'
-        });
-
-        let api = new SpigetAPI();
-
-        let resources = [];
-
-        for(let r of res) {
-
-            let author = await api.getAuthor(r.author.id);
-
-            if(author) {
-
-                r.author = author;
-
-            }
-
-            let category = await api.getCategory(r.category.id);
-
-            if(category) {
-
-                r.category = category;
-
-            }
-
-            resources.push(r);
-
-        }
-
-        return Resource.fromRaw(resources);
-
+    async getResources(options?:Props) {
+        return await Resource.findAll(options);
     }
 
     async getResource(id:number) {
-
-        let res = await APIClient.req({
-            method: 'GET',
-            url: 'resources/'+id
-        });
-
-        
-
+        return await Resource.findByID(id);
     }
 
 }

@@ -1,11 +1,20 @@
-export interface RequestConfig<T> {
+import { APIClient } from "../class/APIClient";
 
-    [name:string]: any;
+export interface RequestConfig<T> {
 
     /**
      * Size of array returned. Default 10
      */
     size?:number;
+
+    /**
+     * Sort by field
+     * Example: Resources More Donwlaoded
+     */
+    sort?:{
+        must: ('most'|'least');
+        field: string;
+    }
 
     /**
      * Page number
@@ -19,4 +28,21 @@ export interface RequestConfig<T> {
 }
 
 export interface CategoryRequestConfig<T> extends RequestConfig<T> {
+}
+
+export interface IconI {
+
+    url:string;
+    hash:string;
+    /**
+     * Base64 encoded image data
+     */
+    data:string;
+    
+
+}
+
+export interface RatingI {
+    count:number;
+    average:number;
 }
