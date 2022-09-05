@@ -1,0 +1,271 @@
+import { ResourceFileI, ResourceI, ResourceLinksI, ResourceRatingI, ResourceVersionI, ResourceVersionSortI } from "../interfaces/Resource";
+import { ReviewI } from "../interfaces/Review";
+import { IconI, RatingI, RequestConfig } from "../interfaces/SpigetAPI";
+import { Props } from "../interfaces/SpigetAPI_resources";
+import { ResourceAPI } from "./api/Resource";
+import { Author, Review } from "./Author";
+import { Category } from "./Category";
+
+
+export class Resource {
+
+    id: number;
+    external: boolean;
+    file: ResourceFileI;
+    likes: number;
+    name: string;
+    version: ResourceVersionSortI;
+    author: Author;
+    category: Category;
+    rating: ResourceRatingI;
+    icon: IconI;
+    releaseDate: number;
+    updateDate: number;
+    downloads: number;
+    premium: boolean;
+    existenceStatus: number;
+    versions: ResourceVersionSortI[];
+    updates: {
+        id: number;
+    };
+    reviews: {
+        id: number;
+    };
+    price: number;
+
+    private description_base64: string;
+    private links_base64: ResourceLinksI;
+
+    testedVersions?: ResourceVersionSortI[];
+    contributors?: string;
+    tag?: string;
+    sourceCodeLink?: string;
+    supportedLanguages?: string;
+    
+    constructor(r:ResourceI, author:Author, category:Category) {
+
+        this.id = r.id;
+        this.external = r.external;
+        this.file = r.file;
+        this.likes = r.likes;
+        this.links_base64 = r.links;
+        this.name = r.name;
+        this.version = r.version;
+        this.author = author;
+        this.category = category;
+        this.rating = r.rating;
+        this.icon = r.icon;
+        this.releaseDate = r.releaseDate;
+        this.updateDate = r.updateDate;
+        this.downloads = r.downloads;
+        this.premium = r.premium;
+        this.existenceStatus = r.existenceStatus;
+        this.description_base64 = r.description;
+        this.versions = r.versions;
+        this.updates = r.updates;
+        this.reviews = r.reviews;
+        this.price = r.price;
+
+        this.testedVersions = r.testedVersions;
+        this.contributors = r.contributors;
+        this.tag = r.tag;
+        this.sourceCodeLink = r.sourceCodeLink;
+        this.supportedLanguages = r.supportedLanguages;
+
+    }
+    
+    async getDownloadUrl(options?:{
+        version?:number|'latest'
+    }) {
+        return await ResourceAPI.getResourceDownload(this.id, options);
+    }
+
+    async getReviews(options?:RequestConfig<ReviewI>) {
+
+        let revs = await ResourceAPI.getResourceReviews(this.id, options);
+
+        if(!revs) return null;
+
+        let reviews = [];
+
+        for(let rev of revs) {
+
+            let author = await Author.findByID(rev.author.id);
+
+            if(!author) break;
+
+            reviews.push(new ResourceReview(rev, this, author));
+
+        }
+
+        return reviews;
+
+    }
+
+    async getUpdates(options?:RequestConfig<ReviewI>) {
+
+        let revs = await ResourceAPI.getResourceReviews(this.id, options);
+
+        if(!revs) return null;
+
+        let reviews = [];
+
+        for(let rev of revs) {
+
+            let author = await Author.findByID(rev.author.id);
+
+            if(!author) break;
+
+            reviews.push(new ResourceReview(rev, this, author));
+
+        }
+
+        return reviews;
+
+    }
+
+    get description() {
+        return Buffer.from(this.description_base64, 'base64').toString('utf-8');
+    }
+
+    get links() {
+        let l:any = {};
+
+        for(let lk of Object.keys(this.links_base64)) {
+            l[Buffer.from(lk,'base64').toString('utf-8')] = Buffer.from(this.links_base64[lk],'base64').toString('utf-8');
+        }
+
+        return l;
+    }
+
+    static async findByID(id:number) {
+
+        let rese = await ResourceAPI.getResource(id);
+
+        if(!rese) return null;
+        
+        let author = await Author.findByID(rese.author.id),
+            category = await Category.findById(rese.category.id)
+
+        if(!author || !category) return null;
+
+        return new Resource(rese, author, category);
+
+    }
+
+    static async findAll(options?:Props) {
+
+        let rses = await ResourceAPI.getResources(options);
+
+        if(!rses) return null;
+
+
+        let rsesx;
+
+        if(!Array.isArray(rses)) {
+            let r:ResourceI[] = [];
+
+            for(let rx of rses.match) {
+                let reso = await ResourceAPI.getResource(rx.id);
+                if(!reso) break;
+
+                r.push(reso);
+            }
+
+            rsesx = r;
+        } else {
+            rsesx = rses;
+        }
+        
+
+        let f = [];
+
+        for(let rese of rsesx) {
+
+            let author = await Author.findByID(rese.author.id),
+                category = await Category.findById(rese.category.id)
+
+            if(!author || !category) return null;
+
+            f.push(new Resource(rese, author, category));
+
+        }
+
+        return f;
+
+    }
+
+}
+
+
+export class ResourceReview {
+
+    author:Author;
+
+    rating:RatingI;
+
+    /**
+     * Base64 Encoded String
+     */
+    private message_base64:string;
+
+    version:string;
+
+    date:number;
+
+    resource:Resource;
+
+    id:number;
+
+    constructor(r:ReviewI, resource:Resource, author:Author) {
+
+        this.id = r.id;
+        this.resource = resource;
+        this.date = r.date;
+        this.version = r.version;
+        this.message_base64 = r.message;
+        this.rating = r.rating;
+        this.author = author;
+    }
+
+    get message() {
+        return Buffer.from(this.message_base64, 'base64').toString('utf-8');
+    }
+
+}
+
+export class ResourceReview {
+
+    author:Author;
+
+    rating:RatingI;
+
+    /**
+     * Base64 Encoded String
+     */
+    private message_base64:string;
+
+    version:string;
+
+    date:number;
+
+    resource:Resource;
+
+    id:number;
+
+    constructor(r:ReviewI, resource:Resource, author:Author) {
+
+        this.id = r.id;
+        this.resource = resource;
+        this.date = r.date;
+        this.version = r.version;
+        this.message_base64 = r.message;
+        this.rating = r.rating;
+        this.author = author;
+    }
+
+    get message() {
+        return Buffer.from(this.message_base64, 'base64').toString('utf-8');
+    }
+
+}

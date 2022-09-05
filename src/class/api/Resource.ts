@@ -1,5 +1,6 @@
 import axios from "axios";
-import { ResourceDownloadLinkI, ResourceForI, ResourceI, ResourceVersionI } from "../../interfaces/Resource";
+import { ResourceDownloadLinkI, ResourceForI, ResourceI, ResourceUpdateI, ResourceVersionI } from "../../interfaces/Resource";
+import { ReviewI } from "../../interfaces/Review";
 import { RequestConfig } from "../../interfaces/SpigetAPI";
 import { filters, isFor, PPP, Props, RequestConfigResources, ResourceForConfig } from "../../interfaces/SpigetAPI_resources";
 import { APIClient, PrepareParams } from "../APIClient";
@@ -62,6 +63,38 @@ export class ResourceAPI {
             method: 'GET',
             url: 'resources/' + id
             // params
+        });
+
+        if (axios.isAxiosError(res)) return null;
+
+        return res;
+
+    }
+
+    static async getResourceReviews(id: number, options?:RequestConfig<ReviewI>): Promise<ReviewI[] | null> {
+
+        let params = PrepareParams(options);
+
+        let res = await API.req({
+            method: 'GET',
+            url: 'resources/' + id + '/reviews',
+            params
+        });
+
+        if (axios.isAxiosError(res)) return null;
+
+        return res;
+
+    }
+
+    static async getResourceUpdates(id: number, options?:RequestConfig<ResourceUpdateI>): Promise<ResourceUpdateI[] | null> {
+
+        let params = PrepareParams(options);
+
+        let res = await API.req({
+            method: 'GET',
+            url: 'resources/' + id + '/updates',
+            params
         });
 
         if (axios.isAxiosError(res)) return null;

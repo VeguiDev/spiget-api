@@ -28,6 +28,8 @@ export interface ResourceRatingI {
 }
 
 export interface ResourceShortI {
+    [name:string]: any;
+
     external: boolean;
     file: ResourceFileI;
     likes: number;
@@ -61,8 +63,8 @@ export interface ResourceI extends ResourceShortI {
         id: number;
     };
     price: number;
-    sourceCodeLink: string;
-    supportedLanguages: string;
+    sourceCodeLink?: string;
+    supportedLanguages?: string;
     contributors: string;
 
 };
@@ -75,7 +77,7 @@ export interface ResourceForI {
         id: number;
         name: string;
         testedVersions: string[]
-    }
+    }[]
 
 }
 
@@ -86,11 +88,22 @@ export interface ResourceDownloadLinkI {
 
 }
 
+export interface ResourceUpdateI {
+
+    id:number;
+    resource:number;
+    title:string;
+    description:string;
+    likes:number;
+    date: number;
+
+}
+
 export interface ResourceVersionI extends ResourceVersionSortI {
     downloads: number;
     rating: RatingI;
     url: string;
     name: string;
     releaseDate: number;
-    resource?: number | ResourceI;
+    resource: number | ResourceI;
 }
