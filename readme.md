@@ -5,7 +5,7 @@
 ![NPM VERSION](https://img.shields.io/npm/v/papermc-api?style=flat)
 ![DOWNLOADS](https://img.shields.io/npm/dm/papermc-api.svg?style=flat)
 ![LICENSE](https://img.shields.io/npm/l/papermc-api)
-![BUILD](https://img.shields.io/github/workflow/status/VeguiDev/papermc-api/Node.js%20CI)
+![BUILD](https://img.shields.io/github/workflow/status/VeguiDev/spiget-api/Node.js%20CI)
 
 *This library allows you to obtain version information of PaperMC projects and also generate download links.*
 
