@@ -39,7 +39,7 @@ export class Author {
 
             let category = await Category.findById(res.category.id);
 
-            if (!category) break;
+            if (!category) continue;
 
             resources.push(new Resource(res, this, category));
 
@@ -63,7 +63,7 @@ export class Author {
             if(rev.resource) {
                 let resource = await Resource.findByID(rev.resource);
 
-                if (!resource) break;
+                if (!resource) continue;
 
                 review = new Review(rev, this, resource);
             } else {

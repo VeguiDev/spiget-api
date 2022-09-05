@@ -7,7 +7,7 @@ const api = new SpigetAPI("dev");
     let author = await api.getAuthorByID(2);
 
     console.log(author);
-
+ 
     let resources = await author?.getResources({
         sort: {
             must: 'most',

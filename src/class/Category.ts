@@ -30,7 +30,7 @@ export class Category {
 
             let author = await Author.findByID(res.author.id);
 
-            if(!author) break;
+            if(!author) continue;
 
             resources.push(new Resource(res, author, this));
 

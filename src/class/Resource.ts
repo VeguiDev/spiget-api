@@ -92,7 +92,7 @@ export class Resource {
 
             let author = await Author.findByID(rev.author.id);
 
-            if(!author) break;
+            if(!author) continue;
 
             reviews.push(new ResourceReview(rev, this, author));
 
@@ -175,8 +175,8 @@ export class Resource {
 
         let rese = await ResourceAPI.getResource(id);
 
-        if(!rese) return null;
-        
+        if(!rese || rese.error == "resource not found") return null;
+        console.log(rese);
         let author = await Author.findByID(rese.author.id),
             category = await Category.findById(rese.category.id)
 
@@ -200,7 +200,7 @@ export class Resource {
 
             for(let rx of rses.match) {
                 let reso = await ResourceAPI.getResource(rx.id);
-                if(!reso) break;
+                if(!reso) continue;
 
                 r.push(reso);
             }
