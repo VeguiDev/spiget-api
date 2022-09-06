@@ -6,6 +6,7 @@
 ![DOWNLOADS](https://img.shields.io/npm/dm/papermc-api.svg?style=flat)
 ![LICENSE](https://img.shields.io/npm/l/papermc-api)
 ![BUILD](https://img.shields.io/github/workflow/status/VeguiDev/spiget-api/Node.js%20CI)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/3476d11695cf45b38da2c7f556205df3)](https://www.codacy.com/gh/VeguiDev/spiget-api/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=VeguiDev/spiget-api&amp;utm_campaign=Badge_Grade)
 
 *This library allows you to obtain version information of PaperMC projects and also generate download links.*
 
