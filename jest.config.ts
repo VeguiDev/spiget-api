@@ -12,5 +12,6 @@ export default {
   ],
   preset: 'ts-jest',
   testEnvironment: 'node',
-  verbose:true
+  verbose:true,
+  coverageReporters: ["json-summary"]
 };
