@@ -151,7 +151,9 @@ describe('check if Resource Methods works', () => {
 
 it('check if getResources works', async () => {
 
-    let resources = await api.getResources();
+    let resources = await api.getResources({
+        size: 2
+    });
 
     if (!resources) {
         expect(resources).not.toBeNull();
@@ -167,7 +169,8 @@ let resources: Resource[] | null = null;
 
 it('check if getResources for version works', async () => {
     resources = resources = await api.getResources({
-        version: ["1.19"]
+        version: ["1.19"],
+        size: 2
     });
     if (!resources) {
         expect(resources).not.toBeNull();

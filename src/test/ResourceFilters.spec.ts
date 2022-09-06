@@ -3,10 +3,13 @@ import { SpigetAPI } from "../class/SpigetAPI";
 
 let api = new SpigetAPI("test");
 
+jest.setTimeout(10000);
+
 it('check if Get Resources New works', async () => {
 
     let resources = await api.getResources({
-        filter: 'new'
+        filter: 'new',
+        size:2
     });
 
     if (!resources) {
@@ -22,7 +25,8 @@ it('check if Get Resources New works', async () => {
 it('check if Get Resources Free works', async () => {
 
     let resources = await api.getResources({
-        filter: 'free'
+        filter: 'free',
+        size:2
     });
 
     if (!resources) {
@@ -38,7 +42,8 @@ it('check if Get Resources Free works', async () => {
 it('check if Get Resources Premium works', async () => {
 
     let resources = await api.getResources({
-        filter: 'premium'
+        filter: 'premium',
+        size:2
     });
 
     if (!resources) {

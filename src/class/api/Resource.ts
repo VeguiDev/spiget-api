@@ -13,7 +13,7 @@ export class ResourceAPI {
      * Request List of all resources. (Free and premium)
      */
 
-    static async getResources<T extends Props>(options?: PPP<T>): Promise<ResourceI[] | ResourceForI | null> {
+    static async getResources(options?: Props): Promise<ResourceI[] | ResourceForI | null> {
 
         let url = 'resources';
 

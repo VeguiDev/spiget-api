@@ -13,7 +13,11 @@ export function isFor(arg:any):arg is ResourceForConfig  {
     return !!arg.version;
 }
 
-export type Props = RequestConfigResources | ResourceForConfig;
+export interface Props extends RequestConfig<ResourceI> {
+    filter?:filters;
+    version?:string[];
+    method?:('any'|'all');
+}
 
 export interface RequestConfigResources extends RequestConfig<ResourceI> {
     filter: filters;

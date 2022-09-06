@@ -7,7 +7,9 @@ const api = new SpigetAPI("test");
 jest.setTimeout(10000);
 
 it("check if getAllCategories works", async () => {
-    let categories = await api.getCategories();
+    let categories = await api.getCategories({
+        size: 2
+    });
 
     if (!categories) {
         expect(categories).not.toBeNull();

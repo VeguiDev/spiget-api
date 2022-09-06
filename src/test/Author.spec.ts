@@ -17,7 +17,9 @@ it('check if get author', async () => {
 
 it('check if get authors', async () => {
 
-    let authors = await api.getAuthors();
+    let authors = await api.getAuthors({
+        size: 2
+    });
 
     if(!authors) {
         expect(authors).not.toBeNull();
@@ -39,7 +41,9 @@ it("check if can get author resources", async () => {
         return;
     }
 
-    let resources = await author.getResources();
+    let resources = await author.getResources({
+        size:2
+    });
 
     if(!resources) {
         expect(resources).not.toBeNull();
