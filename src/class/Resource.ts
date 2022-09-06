@@ -192,35 +192,32 @@ export class Resource {
 
         if(!rses) return null;
 
-
         let rsesx;
 
         if(!Array.isArray(rses)) {
-            let r:ResourceI[] = [];
+            let r:Resource[] = [];
 
             for(let rx of rses.match) {
-                let reso = await ResourceAPI.getResource(rx.id);
+                let reso = await Resource.findByID(rx.id);
                 if(!reso) continue;
 
                 r.push(reso);
             }
 
-            rsesx = r;
+            return r;
         } else {
             rsesx = rses;
         }
         
 
-        let f = [];
+        let f:Resource[] = [];
 
         for(let rese of rsesx) {
 
-            let author = await Author.findByID(rese.author.id),
-                category = await Category.findById(rese.category.id)
+            let resource = await Resource.findByID(rese.id);
 
-            if(!author || !category) return null;
-
-            f.push(new Resource(rese, author, category));
+            if(!resource) continue;
+            f.push(resource);
 
         }
 

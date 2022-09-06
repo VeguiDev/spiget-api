@@ -17,32 +17,27 @@ export class ResourceAPI {
 
         let url = 'resources';
 
-        if (options) {
-            if (options.filter) {
+        if (options && options.filter) {
 
-                switch (options.filter) {
-                    case "free":
-                        url += "/free";
-                        break;
-                    case "new":
-                        url += "/new";
-                        break;
-                    case "premium":
-                        url += "/premium"
-                        break;
+            switch (options.filter) {
+                case "free":
+                    url += "/free";
+                    break;
+                case "new":
+                    url += "/new";
+                    break;
+                case "premium":
+                    url += "/premium"
+                    break;
 
-                }
-
-            } else if (options.version) {
-                url += "/for/" + options.version.join(",");
-                delete (options as any).version;
             }
 
-            delete options?.filter;
+        } else if (options && !options.filter && options.version) {
+             url += "/for/" + options.version.join(",");
         }
 
         let params = PrepareParams(options);
-        
+
         let res = await API.req({
             method: 'GET',
             url,
@@ -167,7 +162,7 @@ export class ResourceAPI {
 
         if (options) {
             if (options.version) {
-                
+
                 if (!resource.external) {
 
                     let rUrl = "https://www.spigotmc.org/resources/" + resource.name + "." + resource.id + "/download?version=" + options?.version;
@@ -194,7 +189,7 @@ export class ResourceAPI {
                     };
 
                 }
-                
+
                 reqUrl = 'resources/' + id + '/versions/' + options.version + '/download'
             }
         }

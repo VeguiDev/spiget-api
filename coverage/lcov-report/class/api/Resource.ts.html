@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">95.23% </span>
+                <span class="strong">95.14% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>240/252</span>
+                <span class='fraction'>235/247</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">51.28% </span>
+                <span class="strong">56.09% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>20/39</span>
+                <span class='fraction'>23/41</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">95.23% </span>
+                <span class="strong">95.14% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>240/252</span>
+                <span class='fraction'>235/247</span>
             </div>
         
             
@@ -309,12 +309,7 @@
 <a name='L244'></a><a href='#L244'>244</a>
 <a name='L245'></a><a href='#L245'>245</a>
 <a name='L246'></a><a href='#L246'>246</a>
-<a name='L247'></a><a href='#L247'>247</a>
-<a name='L248'></a><a href='#L248'>248</a>
-<a name='L249'></a><a href='#L249'>249</a>
-<a name='L250'></a><a href='#L250'>250</a>
-<a name='L251'></a><a href='#L251'>251</a>
-<a name='L252'></a><a href='#L252'>252</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L247'></a><a href='#L247'>247</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -334,7 +329,6 @@
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
@@ -349,13 +343,9 @@
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
@@ -372,20 +362,20 @@
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">31x</span>
-<span class="cline-any cline-yes">31x</span>
-<span class="cline-any cline-yes">31x</span>
-<span class="cline-any cline-yes">31x</span>
-<span class="cline-any cline-yes">31x</span>
-<span class="cline-any cline-yes">31x</span>
-<span class="cline-any cline-yes">31x</span>
-<span class="cline-any cline-yes">31x</span>
-<span class="cline-any cline-yes">31x</span>
-<span class="cline-any cline-yes">31x</span>
-<span class="cline-any cline-yes">31x</span>
-<span class="cline-any cline-yes">31x</span>
-<span class="cline-any cline-yes">31x</span>
-<span class="cline-any cline-yes">31x</span>
+<span class="cline-any cline-yes">71x</span>
+<span class="cline-any cline-yes">71x</span>
+<span class="cline-any cline-yes">71x</span>
+<span class="cline-any cline-yes">71x</span>
+<span class="cline-any cline-yes">71x</span>
+<span class="cline-any cline-yes">71x</span>
+<span class="cline-any cline-yes">71x</span>
+<span class="cline-any cline-yes">71x</span>
+<span class="cline-any cline-yes">71x</span>
+<span class="cline-any cline-yes">71x</span>
+<span class="cline-any cline-yes">71x</span>
+<span class="cline-any cline-yes">71x</span>
+<span class="cline-any cline-yes">71x</span>
+<span class="cline-any cline-yes">71x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -584,32 +574,27 @@ export class ResourceAPI {
 &nbsp;
         let url = 'resources';
 &nbsp;
-        if (options) {
-            if (options.filter) {
+        if (options &amp;&amp; options.filter) {
 &nbsp;
-                switch (options.filter) {
-                    case "free":
-                        url += "/free";
-                        break;
-                    case "new":
-                        url += "/new";
-                        break;
-                    case "premium":
-                        url += "/premium"
-                        break;
+            switch (options.filter) {
+                case "free":
+                    url += "/free";
+                    break;
+                case "new":
+                    url += "/new";
+                    break;
+                case "premium":
+                    url += "/premium"
+                    break;
 &nbsp;
-                }
-&nbsp;
-            } else if (options.version) {
-                url += "/for/" + options.version.join(",");
-                delete (options as any).version;
             }
 &nbsp;
-            delete options<span class="branch-0 cbranch-no" title="branch not covered" >?.f</span>ilter;
+        } else if (options &amp;&amp; !options.filter &amp;&amp; options.version) {
+             url += "/for/" + options.version.join(",");
         }
 &nbsp;
         let params = PrepareParams(options);
-        
+&nbsp;
         let res = await API.req({
             method: 'GET',
             url,
@@ -734,7 +719,7 @@ export class ResourceAPI {
 &nbsp;
         if (options) {
             if (options.version) {
-                
+&nbsp;
                 if (!resource.external) {
 &nbsp;
                     let rUrl = "https://www.spigotmc.org/resources/" + resource.name + "." + resource.id + "/download?version=" + options<span class="branch-0 cbranch-no" title="branch not covered" >?.v</span>ersion;
@@ -761,7 +746,7 @@ export class ResourceAPI {
                     };
 &nbsp;
                 }
-<span class="cstat-no" title="statement not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >                </span></span>
+<span class="cstat-no" title="statement not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span>
 <span class="cstat-no" title="statement not covered" >                reqUrl = 'resources/' + id + '/versions/' + options.version + '/download'</span>
 <span class="cstat-no" title="statement not covered" >            }</span>
         }
@@ -823,7 +808,7 @@ export class ResourceAPI {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2022-09-05T14:39:28.426Z
+                at 2022-09-06T00:46:29.089Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -165,25 +165,17 @@ it('check if getResources works', async () => {
 
 let resources: Resource[] | null = null;
 
-describe('cheking resources', () => {
-
-    beforeEach(async () => {
-        resources = await api.getResources({
-            version: ["1.19"]
-        });
+it('check if getResources for version works', async () => {
+    resources = resources = await api.getResources({
+        version: ["1.19"]
     });
+    if (!resources) {
+        expect(resources).not.toBeNull();
+        return;
+    }
 
-    it('check if getResources for version works', async () => {
-
-        if (!resources) {
-            expect(resources).not.toBeNull();
-            return;
-        }
-
-        expect(resources).toBeInstanceOf(Array);
-        expect(resources[0]).toBeInstanceOf(Resource);
-
-    });
+    expect(resources).toBeInstanceOf(Array);
+    expect(resources[0]).toBeInstanceOf(Resource);
 
 });
 
@@ -208,58 +200,6 @@ it('check if dscription update works', async () => {
     expect(update.description).toBe("test");
 
 });
-
-describe('getResources filters checking', () => {
-
-    it('check if Get Resources New works', async () => {
-
-        let resources = await api.getResources({
-            filter: 'new'
-        });
-
-        if (!resources) {
-            expect(resources).not.toBeNull();
-            return;
-        }
-
-        expect(resources).toBeInstanceOf(Array);
-        expect(resources[0]).toBeInstanceOf(Resource);
-
-    });
-
-    it('check if Get Resources Free works', async () => {
-
-        let resources = await api.getResources({
-            filter: 'free'
-        });
-
-        if (!resources) {
-            expect(resources).not.toBeNull();
-            return;
-        }
-
-        expect(resources).toBeInstanceOf(Array);
-        expect(resources[0]).toBeInstanceOf(Resource);
-
-    });
-
-    it('check if Get Resources Premium works', async () => {
-
-        let resources = await api.getResources({
-            filter: 'premium'
-        });
-
-        if (!resources) {
-            expect(resources).not.toBeNull();
-            return;
-        }
-
-        expect(resources).toBeInstanceOf(Array);
-        expect(resources[0]).toBeInstanceOf(Resource);
-
-    });
-
-})
 
 it('check if Gets DOWNLOAD URL OF GITHUB RESOURCE works', async () => {
 
