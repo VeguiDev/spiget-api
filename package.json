@@ -1,6 +1,6 @@
 {
     "name": "spiget-api",
-    "version": "0.0.1",
+    "version": "0.0.1-pre1",
     "description": "A client for Spiget that allows you to get the authors, resources and categories from spigotmc.org",
     "main": "./dist/index.js",
     "scripts": {
@@ -36,7 +36,6 @@
     "dependencies": {
         "axios": "^0.27.2"
     },
-    "private":true,
     "devDependencies": {
         "@types/jest": "^29.0.0",
         "@types/node": "^18.7.13",
