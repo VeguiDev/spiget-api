@@ -7,6 +7,7 @@
 ![LICENSE](https://img.shields.io/npm/l/spiget-api)
 ![BUILD](https://img.shields.io/github/workflow/status/VeguiDev/spiget-api/Node.js%20CI)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/3476d11695cf45b38da2c7f556205df3)](https://www.codacy.com/gh/VeguiDev/spiget-api/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=VeguiDev/spiget-api&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/3476d11695cf45b38da2c7f556205df3)](https://www.codacy.com/gh/VeguiDev/spiget-api/dashboard?utm_source=github.com&utm_medium=referral&utm_content=VeguiDev/spiget-api&utm_campaign=Badge_Coverage)
 
 This library allows you to interact with the spigot API, to obtain authors, categories and resources (Plugins).
 
