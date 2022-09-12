@@ -244,13 +244,13 @@ export class ResourceAPI {
 
     }
 
-    static async searchResources(options:SearchRequestConfig<ResourceI, ResourceSearchFields>) {
+    static async searchResources(options:SearchRequestConfig<ResourceI, ResourceSearchFields>):Promise<ResourceI[]|null> {
 
         let params = PrepareParams(options);
 
         let res = await API.req({
             method:"GET",
-            url:"/search/authors/"+options.query,
+            url:"/search/resources/"+options.query,
             params
         });
 

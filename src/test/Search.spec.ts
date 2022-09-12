@@ -1,4 +1,5 @@
 import { Author } from "../class/Author";
+import { Resource } from "../class/Resource";
 
 jest.setTimeout(10000);
 
@@ -17,6 +18,21 @@ describe("Search testing", () => {
 
         expect(authors).toBeInstanceOf(Array);
         expect(authors[0]).toBeInstanceOf(Author);
+    })
+
+    it(" testing if resource search works", async () => {
+        let resources = await Resource.search({
+            query: 'luck',
+            field: 'name'
+        });
+
+        if(!resources) {
+            expect(resources).not.toBeNull();
+            return;
+        }
+
+        expect(resources).toBeInstanceOf(Array);
+        expect(resources[0]).toBeInstanceOf(Resource);
     })
 
 });

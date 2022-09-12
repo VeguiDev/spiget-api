@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">95.14% </span>
+                <span class="strong">95.43% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>235/247</span>
+                <span class='fraction'>251/263</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">52.63% </span>
+                <span class="strong">52.5% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>20/38</span>
+                <span class='fraction'>21/40</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>8/8</span>
+                <span class='fraction'>9/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">95.14% </span>
+                <span class="strong">95.43% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>235/247</span>
+                <span class='fraction'>251/263</span>
             </div>
         
             
@@ -309,7 +309,23 @@
 <a name='L244'></a><a href='#L244'>244</a>
 <a name='L245'></a><a href='#L245'>245</a>
 <a name='L246'></a><a href='#L246'>246</a>
-<a name='L247'></a><a href='#L247'>247</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L247'></a><a href='#L247'>247</a>
+<a name='L248'></a><a href='#L248'>248</a>
+<a name='L249'></a><a href='#L249'>249</a>
+<a name='L250'></a><a href='#L250'>250</a>
+<a name='L251'></a><a href='#L251'>251</a>
+<a name='L252'></a><a href='#L252'>252</a>
+<a name='L253'></a><a href='#L253'>253</a>
+<a name='L254'></a><a href='#L254'>254</a>
+<a name='L255'></a><a href='#L255'>255</a>
+<a name='L256'></a><a href='#L256'>256</a>
+<a name='L257'></a><a href='#L257'>257</a>
+<a name='L258'></a><a href='#L258'>258</a>
+<a name='L259'></a><a href='#L259'>259</a>
+<a name='L260'></a><a href='#L260'>260</a>
+<a name='L261'></a><a href='#L261'>261</a>
+<a name='L262'></a><a href='#L262'>262</a>
+<a name='L263'></a><a href='#L263'>263</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -550,6 +566,22 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -558,7 +590,7 @@
 <span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">import axios from "axios";
 import { ResourceDownloadLinkI, ResourceForI, ResourceI, ResourceUpdateI, ResourceVersionI } from "../../interfaces/Resource";
 import { ReviewI } from "../../interfaces/Review";
-import { RequestConfig } from "../../interfaces/SpigetAPI";
+import { RequestConfig, ResourceSearchFields, SearchRequestConfig } from "../../interfaces/SpigetAPI";
 import { filters, isFor, PPP, Props, RequestConfigResources, ResourceForConfig } from "../../interfaces/SpigetAPI_resources";
 import { APIClient, PrepareParams } from "../APIClient";
 &nbsp;
@@ -572,7 +604,7 @@ export class ResourceAPI {
 &nbsp;
     static async getResources(options?: Props): Promise&lt;ResourceI[] | ResourceForI | null&gt; {
 &nbsp;
-        let url = 'resources';
+        let url = "resources";
 &nbsp;
         if (options &amp;&amp; options.filter) {
 &nbsp;
@@ -596,7 +628,7 @@ export class ResourceAPI {
         let params = PrepareParams(options);
 &nbsp;
         let res = await API.req({
-            method: 'GET',
+            method: "GET",
             url,
             params
         });
@@ -612,8 +644,8 @@ export class ResourceAPI {
         // let params = options;
 &nbsp;
         let res = await API.req({
-            method: 'GET',
-            url: 'resources/' + id
+            method: "GET",
+            url: "resources/" + id
             // params
         });
 &nbsp;
@@ -628,8 +660,8 @@ export class ResourceAPI {
         let params = PrepareParams(options);
 &nbsp;
         let res = await API.req({
-            method: 'GET',
-            url: 'resources/' + id + '/reviews',
+            method: "GET",
+            url: "resources/" + id + "/reviews",
             params
         });
 &nbsp;
@@ -644,8 +676,8 @@ export class ResourceAPI {
         let params = PrepareParams(options);
 &nbsp;
         let res = await API.req({
-            method: 'GET',
-            url: 'resources/' + id + '/updates',
+            method: "GET",
+            url: "resources/" + id + "/updates",
             params
         });
 &nbsp;
@@ -662,8 +694,8 @@ export class ResourceAPI {
         if (Number(update_id) == NaN<span class="branch-0 cbranch-no" title="branch not covered" > &amp;&amp; update_id != "latest")</span> <span class="branch-0 cbranch-no" title="branch not covered" >return null;</span>
 &nbsp;
         let res = await API.req({
-            method: 'GET',
-            url: 'resources/' + id + '/updates/' + update_id
+            method: "GET",
+            url: "resources/" + id + "/updates/" + update_id
             // params
         });
 &nbsp;
@@ -678,8 +710,8 @@ export class ResourceAPI {
         let params = PrepareParams(options);
 &nbsp;
         let res = await API.req({
-            method: 'GET',
-            url: 'resources/' + id + '/versions',
+            method: "GET",
+            url: "resources/" + id + "/versions",
             params
         });
 &nbsp;
@@ -694,8 +726,8 @@ export class ResourceAPI {
         // let params = PrepareParams(options);
 &nbsp;
         let res = await API.req({
-            method: 'GET',
-            url: 'resources/' + id + '/versions/' + version_id
+            method: "GET",
+            url: "resources/" + id + "/versions/" + version_id
             // params
         });
 &nbsp;
@@ -726,7 +758,7 @@ export class ResourceAPI {
 &nbsp;
                     let verID = resource.version.id;
 &nbsp;
-                    if (options &amp;&amp; options.version &amp;&amp; options.version != 'latest') {
+                    if (options &amp;&amp; options.version &amp;&amp; options.version != "latest") {
 &nbsp;
                         verID = options.version;
 &nbsp;
@@ -747,14 +779,14 @@ export class ResourceAPI {
 &nbsp;
                 }
 <span class="cstat-no" title="statement not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span>
-<span class="cstat-no" title="statement not covered" >                reqUrl = 'resources/' + id + '/versions/' + options.version + '/download'</span>
+<span class="cstat-no" title="statement not covered" >                reqUrl = "resources/" + id + "/versions/" + options.version + "/download"</span>
 <span class="cstat-no" title="statement not covered" >            }</span>
         }
 &nbsp;
 &nbsp;
 &nbsp;
         let res = await API.req({
-            method: 'GET',
+            method: "GET",
             url: reqUrl,
             completeResponse: true
         });
@@ -801,6 +833,22 @@ export class ResourceAPI {
 &nbsp;
     }
 &nbsp;
+    static async searchResources(options:SearchRequestConfig&lt;ResourceI, ResourceSearchFields&gt;):Promise&lt;ResourceI[]|null&gt; {
+&nbsp;
+        let params = PrepareParams(options);
+&nbsp;
+        let res = await API.req({
+            method:"GET",
+            url:"/search/resources/"+options.query,
+            params
+        });
+&nbsp;
+        if(axios.isAxiosError(res)) <span class="branch-0 cbranch-no" title="branch not covered" >return null;</span>
+&nbsp;
+        return res;
+&nbsp;
+    }
+&nbsp;
 }</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -808,7 +856,7 @@ export class ResourceAPI {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2022-09-12T13:07:51.550Z
+                at 2022-09-12T13:36:24.801Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

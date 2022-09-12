@@ -1,8 +1,10 @@
+import axios from "axios";
 import { ResourceFileI, ResourceI, ResourceLinksI, ResourceRatingI, ResourceVersionSortI, ResourceVersionI, ResourceUpdateI } from "../interfaces/Resource";
 import { ReviewI } from "../interfaces/Review";
-import { IconI, RatingI, RequestConfig } from "../interfaces/SpigetAPI";
+import { IconI, RatingI, RequestConfig, ResourceSearchFields, SearchRequestConfig } from "../interfaces/SpigetAPI";
 import { Props } from "../interfaces/SpigetAPI_resources";
 import { ResourceAPI } from "./api/Resource";
+import { PrepareParams } from "./APIClient";
 import { Author, Review } from "./Author";
 import { Category } from "./Category";
 
@@ -165,10 +167,31 @@ export class Resource {
         let l:any = {};
 
         for(let lk of Object.keys(this.links_base64)) {
-            l[Buffer.from(lk,'base64').toString('utf-8')] = Buffer.from(this.links_base64[lk],'base64').toString('utf-8');
+            l[Buffer.from(lk,"base64").toString("utf-8")] = Buffer.from(this.links_base64[lk],"base64").toString("utf-8");
         }
 
         return l;
+    }
+
+    static async search(options:SearchRequestConfig<ResourceI, ResourceSearchFields>) {
+
+        let resources = await ResourceAPI.searchResources(options);
+
+        if(!resources) return null;
+        
+        let resourcex = [];
+
+        for(let resource of resources) {
+
+            let author = await Author.findByID(resource.author.id),
+                category = await Category.findById(resource.category.id)
+            
+            if(!author || !category) continue;
+
+            resourcex.push(new Resource(resource, author, category));
+        }
+
+        return resourcex;
     }
 
     static async findByID(id:number) {
