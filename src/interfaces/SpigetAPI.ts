@@ -1,45 +1,48 @@
 import { APIClient } from "../class/APIClient";
+import { Author } from "../class/Author";
+import { Resource } from "../class/Resource";
+import { AuthorI } from "./Author";
 
 export interface RequestConfig<T> {
 
     /**
      * Size of array returned. Default 10
      */
-    size?:number;
+    size?: number;
 
     /**
      * Sort by field
      * Example: Resources More Donwlaoded
      */
-    sort?:{
-        must: ('most'|'least');
+    sort?: {
+        must: ('most' | 'least');
         field: string;
     }
 
     /**
      * Page number
      */
-    page?:number;
+    page?: number;
 
     /**
      * Fields to return
      */
-    fields?:string[]|(keyof T)[];
+    fields?: string[] | (keyof T)[];
 }
 
 export interface AuthorSearchFields {
-    name:string;
+    name: string;
 }
 
 export interface ResourceSearchFields {
-    name:string;
-    tag:string;
+    name: string;
+    tag: string;
 }
 
 export interface SearchRequestConfig<T, U> extends RequestConfig<T> {
 
-    query:string;
-    field:keyof U;
+    query: string;
+    field: keyof U;
 
 }
 
@@ -48,17 +51,17 @@ export interface CategoryRequestConfig<T> extends RequestConfig<T> {
 
 export interface IconI {
 
-    url:string;
-    hash:string;
+    url: string;
+    hash: string;
     /**
      * Base64 encoded image data
      */
-    data:string;
-    
+    data: string;
+
 
 }
 
 export interface RatingI {
-    count:number;
-    average:number;
+    count: number;
+    average: number;
 }
