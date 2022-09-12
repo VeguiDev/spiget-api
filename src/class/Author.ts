@@ -7,7 +7,7 @@ import { AuthorsAPI } from "./api/Author";
 import { ResourceAPI } from "./api/Resource";
 import { APIClient } from "./APIClient";
 import { Category } from "./Category";
-import { Resource, ResourceReview } from "./Resource";
+import { Resource } from "./Resource";
 
 const API = new APIClient();
 

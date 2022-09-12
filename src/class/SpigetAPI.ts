@@ -1,7 +1,7 @@
 import { AuthorI } from "../interfaces/Author";
 import { CategoryI } from "../interfaces/Category";
 import { ResourceI } from "../interfaces/Resource";
-import { AuthorSearchFields, RequestConfig, ResourceSearchFields, SearchRequest, SearchRequestConfig, SearchRequestReturn } from "../interfaces/SpigetAPI";
+import { AuthorSearchFields, RequestConfig, ResourceSearchFields, SearchRequestConfig } from "../interfaces/SpigetAPI";
 import { Props } from "../interfaces/SpigetAPI_resources";
 import { Author } from "./Author";
 import { Category } from "./Category";
