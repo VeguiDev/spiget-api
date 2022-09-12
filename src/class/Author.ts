@@ -2,7 +2,7 @@ import axios from "axios";
 import { AuthorI } from "../interfaces/Author";
 import { ResourceI } from "../interfaces/Resource";
 import { ReviewI } from "../interfaces/Review";
-import { IconI, RatingI, RequestConfig } from "../interfaces/SpigetAPI";
+import { AuthorSearchFields, IconI, RatingI, RequestConfig, SearchRequestConfig } from "../interfaces/SpigetAPI";
 import { AuthorsAPI } from "./api/Author";
 import { ResourceAPI } from "./api/Resource";
 import { APIClient } from "./APIClient";
@@ -96,6 +96,22 @@ export class Author {
         let authors = [];
 
         for (let author of authorsRaw) {
+            authors.push(new Author(author));
+        }
+
+        return authors;
+
+    }
+
+    static async search(options:SearchRequestConfig<AuthorI, AuthorSearchFields>) {
+
+        let searchRaw = await AuthorsAPI.searchAuthors(options);
+
+        if(!searchRaw) return null;
+
+        let authors = [];
+
+        for (let author of searchRaw) {
             authors.push(new Author(author));
         }
 

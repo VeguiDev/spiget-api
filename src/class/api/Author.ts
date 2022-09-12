@@ -3,7 +3,7 @@ import axios from "axios";
 import { AuthorI } from "../../interfaces/Author";
 import { ResourceI } from "../../interfaces/Resource";
 import { ReviewI } from "../../interfaces/Review";
-import { RequestConfig } from "../../interfaces/SpigetAPI";
+import { AuthorSearchFields, RequestConfig, SearchRequestConfig } from "../../interfaces/SpigetAPI";
 import { APIClient, PrepareParams } from "../APIClient";
 
 const API = new APIClient();
@@ -29,6 +29,22 @@ export class AuthorsAPI {
 
     }
     
+    static async searchAuthors(options:SearchRequestConfig<AuthorI, AuthorSearchFields>) {
+
+        let params = PrepareParams(options);
+
+        let res = await API.req({
+            method:'get',
+            url:'/search/authors/'+options.query,
+            params
+        });
+
+        if(axios.isAxiosError(res)) return null;
+
+        return res;
+
+    }
+
     static async getAuthor(id:number):Promise<AuthorI|null> {
 
 

@@ -27,6 +27,17 @@ export interface RequestConfig<T> {
     fields?:string[]|(keyof T)[];
 }
 
+export interface AuthorSearchFields {
+    name:string;
+}
+
+export interface SearchRequestConfig<T, U> extends RequestConfig<T> {
+
+    query:string;
+    field:keyof U;
+
+}
+
 export interface CategoryRequestConfig<T> extends RequestConfig<T> {
 }
 
