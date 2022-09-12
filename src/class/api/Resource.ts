@@ -1,7 +1,7 @@
 import axios from "axios";
 import { ResourceDownloadLinkI, ResourceForI, ResourceI, ResourceUpdateI, ResourceVersionI } from "../../interfaces/Resource";
 import { ReviewI } from "../../interfaces/Review";
-import { RequestConfig } from "../../interfaces/SpigetAPI";
+import { RequestConfig, ResourceSearchFields, SearchRequestConfig } from "../../interfaces/SpigetAPI";
 import { filters, isFor, PPP, Props, RequestConfigResources, ResourceForConfig } from "../../interfaces/SpigetAPI_resources";
 import { APIClient, PrepareParams } from "../APIClient";
 
@@ -15,7 +15,7 @@ export class ResourceAPI {
 
     static async getResources(options?: Props): Promise<ResourceI[] | ResourceForI | null> {
 
-        let url = 'resources';
+        let url = "resources";
 
         if (options && options.filter) {
 
@@ -39,7 +39,7 @@ export class ResourceAPI {
         let params = PrepareParams(options);
 
         let res = await API.req({
-            method: 'GET',
+            method: "GET",
             url,
             params
         });
@@ -55,8 +55,8 @@ export class ResourceAPI {
         // let params = options;
 
         let res = await API.req({
-            method: 'GET',
-            url: 'resources/' + id
+            method: "GET",
+            url: "resources/" + id
             // params
         });
 
@@ -71,8 +71,8 @@ export class ResourceAPI {
         let params = PrepareParams(options);
 
         let res = await API.req({
-            method: 'GET',
-            url: 'resources/' + id + '/reviews',
+            method: "GET",
+            url: "resources/" + id + "/reviews",
             params
         });
 
@@ -87,8 +87,8 @@ export class ResourceAPI {
         let params = PrepareParams(options);
 
         let res = await API.req({
-            method: 'GET',
-            url: 'resources/' + id + '/updates',
+            method: "GET",
+            url: "resources/" + id + "/updates",
             params
         });
 
@@ -105,8 +105,8 @@ export class ResourceAPI {
         if (Number(update_id) == NaN && update_id != "latest") return null;
 
         let res = await API.req({
-            method: 'GET',
-            url: 'resources/' + id + '/updates/' + update_id
+            method: "GET",
+            url: "resources/" + id + "/updates/" + update_id
             // params
         });
 
@@ -121,8 +121,8 @@ export class ResourceAPI {
         let params = PrepareParams(options);
 
         let res = await API.req({
-            method: 'GET',
-            url: 'resources/' + id + '/versions',
+            method: "GET",
+            url: "resources/" + id + "/versions",
             params
         });
 
@@ -137,8 +137,8 @@ export class ResourceAPI {
         // let params = PrepareParams(options);
 
         let res = await API.req({
-            method: 'GET',
-            url: 'resources/' + id + '/versions/' + version_id
+            method: "GET",
+            url: "resources/" + id + "/versions/" + version_id
             // params
         });
 
@@ -169,7 +169,7 @@ export class ResourceAPI {
 
                     let verID = resource.version.id;
 
-                    if (options && options.version && options.version != 'latest') {
+                    if (options && options.version && options.version != "latest") {
 
                         verID = options.version;
 
@@ -190,14 +190,14 @@ export class ResourceAPI {
 
                 }
 
-                reqUrl = 'resources/' + id + '/versions/' + options.version + '/download'
+                reqUrl = "resources/" + id + "/versions/" + options.version + "/download"
             }
         }
 
 
 
         let res = await API.req({
-            method: 'GET',
+            method: "GET",
             url: reqUrl,
             completeResponse: true
         });
@@ -241,6 +241,22 @@ export class ResourceAPI {
         }
 
         return null;
+
+    }
+
+    static async searchResources(options:SearchRequestConfig<ResourceI, ResourceSearchFields>) {
+
+        let params = PrepareParams(options);
+
+        let res = await API.req({
+            method:"GET",
+            url:"/search/authors/"+options.query,
+            params
+        });
+
+        if(axios.isAxiosError(res)) return null;
+
+        return res;
 
     }
 

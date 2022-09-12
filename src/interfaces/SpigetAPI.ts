@@ -31,6 +31,11 @@ export interface AuthorSearchFields {
     name:string;
 }
 
+export interface ResourceSearchFields {
+    name:string;
+    tag:string;
+}
+
 export interface SearchRequestConfig<T, U> extends RequestConfig<T> {
 
     query:string;
