@@ -19,12 +19,19 @@ export class SpigetAPI {
 
     }
 
+    /**
+     * Get author by id
+     */
+
     async getAuthorByID(id:number) {
 
         return await Author.findByID(id);
 
     }
 
+    /**
+     * Get list of authors
+     */
     async getAuthors(options?:RequestConfig<AuthorI>) {
 
         return await Author.findAll(options);

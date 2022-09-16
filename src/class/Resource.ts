@@ -76,12 +76,18 @@ export class Resource {
 
     }
     
+    /**
+     * Generate download url for this resource
+     */
     async getDownloadUrl(options?:{
         version?:number|'latest'
     }) {
         return await ResourceAPI.getResourceDownload(this.id, options);
     }
 
+    /**
+     * Get list of reviews of this resource
+     */
     async getReviews(options?:RequestConfig<ReviewI>) {
 
         let revs = await ResourceAPI.getResourceReviews(this.id, options);
@@ -104,6 +110,9 @@ export class Resource {
 
     }
 
+    /**
+     * Get list of updates of this resource
+     */
     async getUpdates(options?:RequestConfig<ResourceUpdateI>) {
 
         let upts = await ResourceAPI.getResourceUpdates(this.id, options);
@@ -122,6 +131,9 @@ export class Resource {
 
     }
 
+    /**
+     * Get specific update of this resource
+     */
     async getUpdate(id:number|"latest") {
 
         let upt = await ResourceAPI.getResourceUpdate(this.id, id);
@@ -132,6 +144,9 @@ export class Resource {
 
     }
 
+    /**
+     * Get list of versions of this resource
+     */
     async getVersions(options?:RequestConfig<ResourceVersionSortI>) {
         let vers = await ResourceAPI.getResourceVersions(this.id, options);
 
@@ -149,6 +164,9 @@ export class Resource {
 
     }
 
+    /**
+     * Get specific version of this resource
+     */
     async getVersion(id:number|"latest") {
 
         let ver = await ResourceAPI.getResourceVersion(this.id, id);
@@ -173,6 +191,9 @@ export class Resource {
         return l;
     }
 
+    /**
+     * Search a resource
+     */
     static async search(options:SearchRequestConfig<ResourceI, ResourceSearchFields>) {
 
         let resources = await ResourceAPI.searchResources(options);
@@ -194,6 +215,9 @@ export class Resource {
         return resourcex;
     }
 
+    /**
+     * Find a resource by ID
+     */
     static async findByID(id:number) {
 
         let rese = await ResourceAPI.getResource(id);
@@ -209,6 +233,9 @@ export class Resource {
 
     }
 
+    /**
+     * Find all resources
+     */
     static async findAll(options?:Props) {
 
         let rses = await ResourceAPI.getResources(options);

@@ -48,7 +48,9 @@ export class Author {
         return resources;
 
     }
-
+    /**
+     * Get Reviews of this author.
+     */
     async getReviews(options?: RequestConfig<ReviewI>) {
 
         let reviews = await AuthorsAPI.getAuthorReviews(this.id, options);
