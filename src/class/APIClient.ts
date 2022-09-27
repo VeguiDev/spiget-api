@@ -1,5 +1,7 @@
 import axios, { Axios, AxiosRequestConfig } from "axios";
 
+import crypto from 'crypto';
+
 export class APIError {
 
     code: number;
@@ -18,10 +20,22 @@ export interface AxiosRequestConfigI extends AxiosRequestConfig {
 
 export class APIClient {
 
-    cl: Axios = axios.create({
-        baseURL: 'https://api.spiget.org/v2',
-        validateStatus: (statusN) => statusN < 500, 
-    });
+    static instance:APIClient;
+
+    cl: Axios;
+
+    private agentName:string;
+
+    constructor(agent_name:string) {
+        this.agentName = agent_name;
+        this.cl = axios.create({
+            baseURL: 'https://api.spiget.org/v2',
+            validateStatus: (statusN) => statusN < 500,
+            headers: {
+                'User-Agent': this.agentName
+            } 
+        });
+    }
 
     static async GETGITHUBRELEASE(urlx: string) {
 
@@ -104,6 +118,18 @@ export class APIClient {
         }
 
 
+    }
+
+    static getInstance(agent?:string) {
+        if(!this.instance) {
+            let aname = crypto.randomBytes(20).toString("hex");
+
+            if(agent) {
+                aname = agent;
+            }
+
+            this.instance = new this(aname);
+        }
     }
 
 }
