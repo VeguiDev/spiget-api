@@ -5,7 +5,7 @@ import { RequestConfig, ResourceSearchFields, SearchRequestConfig } from "../../
 import { filters, isFor, PPP, Props, RequestConfigResources, ResourceForConfig } from "../../interfaces/SpigetAPI_resources";
 import { APIClient, PrepareParams } from "../APIClient";
 
-const API = new APIClient();
+const API = APIClient.getInstance();
 
 export class ResourceAPI {
 

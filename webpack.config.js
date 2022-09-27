@@ -11,11 +11,15 @@ module.exports = {
     },
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
+        fallback: {
+            "crypto": require.resolve('crypto-browserify')
+        }
     },
     output: {
         library: "spigotapi",
         libraryTarget: "umd",
-        filename: 'dist/bundle.js',
+        libraryExport: "default",
+        filename: 'spiget-api.umd.min.js',
         path: path.resolve(__dirname, 'dist'),
     },
 };

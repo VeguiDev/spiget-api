@@ -1,6 +1,6 @@
 import { APIClient, PrepareParams } from "../class/APIClient";
 
-let api = new APIClient();
+let api = APIClient.getInstance();
 
 jest.setTimeout(10000);
 

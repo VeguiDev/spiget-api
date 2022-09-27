@@ -130,6 +130,8 @@ export class APIClient {
 
             this.instance = new this(aname);
         }
+
+        return this.instance;
     }
 
 }

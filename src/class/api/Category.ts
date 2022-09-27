@@ -7,7 +7,7 @@ import { ReviewI } from "../../interfaces/Review";
 import { RequestConfig } from "../../interfaces/SpigetAPI";
 import { APIClient, PrepareParams } from "../APIClient";
 
-const API = new APIClient();
+const API = APIClient.getInstance();
 
 export class CategoryAPI {
 

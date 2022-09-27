@@ -9,7 +9,7 @@ import { APIClient } from "./APIClient";
 import { Category } from "./Category";
 import { Resource } from "./Resource";
 
-const API = new APIClient();
+const API = APIClient.getInstance();
 
 export class Author {
 

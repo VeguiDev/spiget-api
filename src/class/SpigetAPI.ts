@@ -3,6 +3,7 @@ import { CategoryI } from "../interfaces/Category";
 import { ResourceI } from "../interfaces/Resource";
 import { AuthorSearchFields, RequestConfig, ResourceSearchFields, SearchRequestConfig } from "../interfaces/SpigetAPI";
 import { Props } from "../interfaces/SpigetAPI_resources";
+import { APIClient } from "./APIClient";
 import { Author } from "./Author";
 import { Category } from "./Category";
 import { Resource } from "./Resource";
@@ -15,7 +16,7 @@ export class SpigetAPI {
     constructor(agent_name:string) {
 
         this.agent_name = agent_name;
-        process.env.SPIGETAPI_AGENT_NAME = agent_name;
+        APIClient.getInstance(agent_name);
 
     }
 

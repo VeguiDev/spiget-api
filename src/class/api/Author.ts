@@ -6,7 +6,7 @@ import { ReviewI } from "../../interfaces/Review";
 import { AuthorSearchFields, RequestConfig, SearchRequestConfig } from "../../interfaces/SpigetAPI";
 import { APIClient, PrepareParams } from "../APIClient";
 
-const API = new APIClient();
+const API = APIClient.getInstance();
 
 export class AuthorsAPI {
 
