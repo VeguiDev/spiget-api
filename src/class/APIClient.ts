@@ -1,6 +1,6 @@
 import axios, { Axios, AxiosRequestConfig } from "axios";
 
-import crypto from 'crypto';
+import { makeRandomString } from "../util/Utils";
 
 export class APIError {
 
@@ -122,7 +122,8 @@ export class APIClient {
 
     static getInstance(agent?:string) {
         if(!this.instance) {
-            let aname = crypto.randomBytes(20).toString("hex");
+            
+            let aname = makeRandomString(20);
 
             if(agent) {
                 aname = agent;

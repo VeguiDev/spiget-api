@@ -43,6 +43,7 @@
         "stream": "^0.0.2"
     },
     "devDependencies": {
+        "@types/crypto-js": "^4.1.1",
         "@types/jest": "^29.0.0",
         "@types/node": "^18.7.13",
         "jest": "^28.1.3",

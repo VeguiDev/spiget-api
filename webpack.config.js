@@ -18,13 +18,8 @@ module.exports = {
         library: "spigetapi",
         libraryTarget: "umd",
         libraryExport: "default",
-        filename: '[name].umd.min.js',
+        filename: 'spiget-api.umd.min.js',
         path: path.resolve(__dirname, 'dist'),
-    },
-    optimization: {
-        splitChunks: {
-            chunks: "all",
-        },
     },
     mode: "production"
 };
