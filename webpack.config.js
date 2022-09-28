@@ -1,4 +1,5 @@
 const path = require('path');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 module.exports = {
     entry: './src/index.ts',
@@ -10,16 +11,20 @@ module.exports = {
         }, ],
     },
     resolve: {
-        extensions: ['.tsx', '.ts', '.js'],
-        fallback: {
-            "crypto": require.resolve('crypto-browserify')
-        }
+        extensions: [".tsx", ".ts", ".js"],
+        plugins: [new TsconfigPathsPlugin({ configFile: "./tsconfig.browser.json" })]
     },
     output: {
         library: "spigetapi",
         libraryTarget: "umd",
         libraryExport: "default",
-        filename: 'spiget-api.umd.min.js',
+        filename: '[name].umd.min.js',
         path: path.resolve(__dirname, 'dist'),
     },
+    optimization: {
+        splitChunks: {
+            chunks: "all",
+        },
+    },
+    mode: "production"
 };
