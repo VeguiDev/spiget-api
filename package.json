@@ -1,6 +1,6 @@
 {
     "name": "spiget-api",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "A client for Spiget that allows you to get the authors, resources and categories from spigotmc.org",
     "main": "./dist/index.js",
     "scripts": {
