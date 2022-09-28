@@ -9,6 +9,9 @@
         "prepare": "npm run build",
         "test": "jest"
     },
+    "browser": {
+        "spiget-api": "./dist/spiget-api.umd.min.js"
+    },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/VeguiDev/spiget-api.git"

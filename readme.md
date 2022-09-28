@@ -36,6 +36,16 @@ const SpigetAPI = require('spiget-api');
 const api = new SpigetAPI("agent_name");
 ```
 
+Or if you using in the browser
+
+```html
+<script src="https://unpkg.org/spiget-api@latest/dist/spiget-api.umd.min.js"></script>
+
+<script>
+    let api = new spigetapi("agent_name"); // To instance
+</script>
+```
+
 Get array of resources...
 
 ```js

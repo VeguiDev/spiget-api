@@ -16,7 +16,7 @@ module.exports = {
         }
     },
     output: {
-        library: "spigotapi",
+        library: "spigetapi",
         libraryTarget: "umd",
         libraryExport: "default",
         filename: 'spiget-api.umd.min.js',
