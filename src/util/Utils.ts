@@ -1,48 +1,73 @@
 import chalk from "chalk";
 
-export function makeRandomString(length:number) {
-    var result           = '';
-    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.';
-    var charactersLength = characters.length;
-    for ( var i = 0; i < length; i++ ) {
-      result += characters.charAt(Math.floor(Math.random() * 
- charactersLength));
-   }
-   return result;
+export function makeRandomString(length: number) {
+  var result = '';
+  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.';
+  var charactersLength = characters.length;
+  for (var i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() *
+      charactersLength));
+  }
+  return result;
 }
 
-export function RepresentObjectForConsole(object:any, spaces?:number):string {
+export function RepresentObjectForConsole(object: any, spaces?: number): string {
 
   let rspaces = 0;
 
-  if(spaces) {
+  if (spaces) {
     rspaces = spaces;
   }
 
   let tspaces = "";
 
-  for(let x = 0; x < rspaces; x++) {
-    tspaces+=" ";
+  for (let x = 0; x < rspaces; x++) {
+    tspaces += " ";
   }
+  
+  if (Array.isArray(object)) {
 
-  if(object.constructor.name && !spaces) {
-    console.log(chalk.green("> ")+chalk.blueBright(object.constructor.name));
-  }
+    let finalTxT = [];
 
-  let finalTxT = [];
+    for(let x = object.length; x >= 0; x--) {
+      let item = object[x];
+      finalTxT.push("");
+      finalTxT.push(tspaces+"- Item #"+(x+1)+"\n");
+      if(typeof item == 'string' || typeof item == 'boolean' ) {
+        finalTxT.push(tspaces+"- "+item);
+      } if(typeof item == 'object') {
+        finalTxT.push(RepresentObjectForConsole(item, rspaces+2));
+      } else {
+        finalTxT.push(tspaces+"- "+item);
+      }
 
-  for(let key of Object.keys(object)) {
-
-    if(typeof object[key] == 'object') {
-      finalTxT.push(RepresentObjectForConsole(object[key], rspaces+2));
-    } else if(Array.isArray(object[key])) {
-      finalTxT.push(object[key].join(chalk.greenBright(",")));
-    } else {
-      finalTxT.push(tspaces+"• "+key+": "+ object[key]);
     }
 
-  }
+    return finalTxT.join("\n");
 
-  return finalTxT.join("\n");
+  } else {
+
+    if (object.constructor.name && !spaces) {
+      console.log(chalk.green("> ") + chalk.blueBright(object.constructor.name));
+    }
+
+    let finalTxT = [];
+
+    for (let key of Object.keys(object)) {
+
+      if (typeof object[key] == 'object') {
+        finalTxT.push(tspaces+"• "+key+": ");
+        finalTxT.push(RepresentObjectForConsole(object[key], rspaces + 2));
+      } else if (Array.isArray(object[key])) {
+        finalTxT.push(object[key].join(chalk.greenBright(",")));
+      } else {
+        finalTxT.push(tspaces + "• " + key + ": " + object[key]);
+      }
+
+    }
+
+    return finalTxT.join("\n");
+
+  }
 
 }
