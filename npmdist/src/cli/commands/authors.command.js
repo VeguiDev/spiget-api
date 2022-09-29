@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AuthorsCommand = void 0;
+const commander_1 = require("commander");
+const get_command_1 = require("./authors/get.command");
+const search_command_1 = require("./authors/search.command");
+let command = new commander_1.Command("authors");
+exports.AuthorsCommand = command;
+command.aliases(["author"]);
+command.description("This cli command is used to interact with Authors endpoint of Spiget API Rest.");
+command.addCommand(get_command_1.AuthorListCoomand);
+command.addCommand(get_command_1.AuthorGetCommand);
+command.addCommand(search_command_1.AuthorSearchCommand);

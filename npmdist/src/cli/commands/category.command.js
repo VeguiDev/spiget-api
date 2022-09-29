@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CategoriesCommand = void 0;
+const commander_1 = require("commander");
+const list_command_1 = require("./category/list.command");
+let command = new commander_1.Command("categories");
+exports.CategoriesCommand = command;
+command.aliases(["category"]);
+command.description("This cli command is used to interact with Categories endpoint of Spiget API Rest.");
+command.addCommand(list_command_1.CategoryListCommand);

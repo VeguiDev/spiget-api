@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Resource = exports.Category = exports.Author = exports.SpigetAPI = void 0;
+const SpigetAPI_1 = require("./class/SpigetAPI");
+var SpigetAPI_2 = require("./class/SpigetAPI");
+Object.defineProperty(exports, "SpigetAPI", { enumerable: true, get: function () { return SpigetAPI_2.SpigetAPI; } });
+var Author_1 = require("./class/Author");
+Object.defineProperty(exports, "Author", { enumerable: true, get: function () { return Author_1.Author; } });
+var Category_1 = require("./class/Category");
+Object.defineProperty(exports, "Category", { enumerable: true, get: function () { return Category_1.Category; } });
+var Resource_1 = require("./class/Resource");
+Object.defineProperty(exports, "Resource", { enumerable: true, get: function () { return Resource_1.Resource; } });
+exports.default = SpigetAPI_1.SpigetAPI;

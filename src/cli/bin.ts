@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import {program, Option} from 'commander';
-import packageInfo from '../../package.json';
+import packageInfo from '../details.json';
 import { AuthorsCommand } from './commands/authors.command';
 import { CategoriesCommand } from './commands/category.command';
 
