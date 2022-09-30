@@ -90,7 +90,7 @@ export class Author {
     }
 
     static async findAll(options?: RequestConfig<AuthorI>) {
-
+        
         let authorsRaw = await AuthorsAPI.getAuthors(options);
 
         if (!authorsRaw) return null;

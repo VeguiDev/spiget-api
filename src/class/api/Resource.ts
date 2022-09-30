@@ -37,7 +37,7 @@ export class ResourceAPI {
         }
 
         let params = PrepareParams(options);
-
+        
         let res = await API.req({
             method: "GET",
             url,

@@ -16,7 +16,7 @@ export class AuthorsAPI {
     static async getAuthors(options?:RequestConfig<AuthorI>):Promise<AuthorI[] |null> {
 
         let params = PrepareParams(options);
-
+        
         let res = await API.req({
             method: 'GET',
             url: 'authors',

@@ -1,4 +1,5 @@
 import chalk from "chalk";
+import { Resource } from "../class/Resource";
 
 export function makeRandomString(length: number) {
   var result = '';
@@ -11,7 +12,7 @@ export function makeRandomString(length: number) {
   return result;
 }
 
-export function RepresentObjectForConsole(object: any, spaces?: number): string {
+export function RepresentObjectForConsole(object: any, spaces?: number, itemNum?:boolean): string {
 
   let rspaces = 0;
 
@@ -24,21 +25,21 @@ export function RepresentObjectForConsole(object: any, spaces?: number): string 
   for (let x = 0; x < rspaces; x++) {
     tspaces += " ";
   }
-  
-  if (Array.isArray(object)) {
 
+  if (Array.isArray(object)) {
     let finalTxT = [];
 
-    for(let x = object.length; x >= 0; x--) {
+    for (let x = object.length - 1; x >= 0; x--) {
       let item = object[x];
-      finalTxT.push("");
-      finalTxT.push(tspaces+"- Item #"+(x+1)+"\n");
-      if(typeof item == 'string' || typeof item == 'boolean' ) {
-        finalTxT.push(tspaces+"- "+item);
-      } if(typeof item == 'object') {
-        finalTxT.push(RepresentObjectForConsole(item, rspaces+2));
+
+      if(itemNum) {
+        finalTxT.push(tspaces+ "- Item #"+(x+1));
+      }
+
+      if (typeof item != 'object' && !Array.isArray(item)) {
+        finalTxT.push(tspaces + "  " + "- " + item);
       } else {
-        finalTxT.push(tspaces+"- "+item);
+        finalTxT.push(RepresentObjectForConsole(item, rspaces + 4));
       }
 
     }
@@ -55,8 +56,24 @@ export function RepresentObjectForConsole(object: any, spaces?: number): string 
 
     for (let key of Object.keys(object)) {
 
+
+
+      if (key.endsWith("_base64") && object[key.replace(/_base64/g, "")] != undefined) {
+        let realKeyName = key.replace(/_base64/g, "");
+        let keyContent = object[key.replace(/_base64/g, "")];
+
+        if (typeof keyContent == 'object' || Array.isArray(keyContent)) {
+          finalTxT.push(tspaces + "• " + realKeyName + ": ");
+          finalTxT.push(RepresentObjectForConsole(keyContent, rspaces + 2));
+        } else {
+          finalTxT.push(tspaces + "• " + realKeyName + ": " + keyContent);
+        }
+
+        continue;
+      }
+
       if (typeof object[key] == 'object') {
-        finalTxT.push(tspaces+"• "+key+": ");
+        finalTxT.push(tspaces + "• " + key + ": ");
         finalTxT.push(RepresentObjectForConsole(object[key], rspaces + 2));
       } else if (Array.isArray(object[key])) {
         finalTxT.push(object[key].join(chalk.greenBright(",")));

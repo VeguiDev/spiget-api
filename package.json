@@ -8,7 +8,7 @@
         "build:browser": "npx webpack",
         "prepare": "npm run build",
         "test": "jest",
-        "dev:cli": "nodemon --watch ./src/cli/bin.ts --exec \"npm install -g\""
+        "dev:cli": "nodemon --ext ts --watch ./src/**/*.ts --exec \"npm install -g\""
     },
     "browser": {
         "spiget-api": "./dist/spiget-api.umd.min.js"

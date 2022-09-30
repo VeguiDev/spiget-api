@@ -12,31 +12,31 @@ import { Category } from "./Category";
 export class Resource {
 
     id: number;
-    external: boolean;
-    file: ResourceFileI;
-    likes: number;
-    name: string;
-    version: ResourceVersionSortI;
-    author: Author;
-    category: Category;
-    rating: ResourceRatingI;
-    icon: IconI;
-    releaseDate: number;
-    updateDate: number;
-    downloads: number;
-    premium: boolean;
-    existenceStatus: number;
-    versions: ResourceVersionSortI[];
-    updates: {
+    external?: boolean;
+    file?: ResourceFileI;
+    likes?: number;
+    name?: string;
+    version?: ResourceVersionSortI;
+    author?: Author;
+    category?: Category;
+    rating?: ResourceRatingI;
+    icon?: IconI;
+    releaseDate?: number;
+    updateDate?: number;
+    downloads?: number;
+    premium?: boolean;
+    existenceStatus?: number;
+    versions?: ResourceVersionSortI[];
+    updates?: {
         id: number;
     };
-    reviews: {
+    reviews?: {
         id: number;
     };
-    price: number;
+    price?: number;
 
-    private description_base64: string;
-    private links_base64: ResourceLinksI;
+    private description_base64?: string;
+    private links_base64?: ResourceLinksI;
 
     testedVersions?: ResourceVersionSortI[];
     contributors?: string;
@@ -178,10 +178,18 @@ export class Resource {
     }
 
     get description() {
+        if(!this.description_base64) {
+            return undefined;
+        }
         return Buffer.from(this.description_base64, 'base64').toString('utf-8');
     }
 
     get links() {
+
+        if(!this.links_base64) {
+            return undefined;
+        }
+
         let l:any = {};
 
         for(let lk of Object.keys(this.links_base64)) {
@@ -258,20 +266,8 @@ export class Resource {
         } else {
             rsesx = rses;
         }
-        
-
-        let f:Resource[] = [];
-
-        for(let rese of rsesx) {
-
-            let resource = await Resource.findByID(rese.id);
-
-            if(!resource) continue;
-            f.push(resource);
-
-        }
-
-        return f;
+    
+        return rsesx;
 
     }
 
