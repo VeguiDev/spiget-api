@@ -11,6 +11,8 @@
 
 This library allows you to interact with the Spigot API (Spiget), to obtain authors, categories and resources (Plugins).
 
+And if you want you can use it from the terminal.
+
 **Table of Contents:**
 
 - [Documentation](https://github.com/VeguiDev/spiget-api/wiki)
@@ -22,6 +24,12 @@ Installing the client librery...
 
 ```bash
 npm install spiget-api
+```
+
+If your want use it in terminal write this command:
+
+```bash
+npm install spiget-api -g
 ```
 
 Import the library...
